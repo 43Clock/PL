@@ -1,0 +1,20 @@
+[
+	{
+		"número": "A71823",
+		"nome": "Ana Maria",
+		"curso": "MIEI",
+		"notas": [12,14,15.5,18]
+	},
+	{
+		"número": "A89765",
+		"nome": "João Martins",
+		"curso": "LCC",
+		"notas": [11,16,13]
+	},
+	{
+		"número": "A54321",
+		"nome": "Paulo Correia",
+		"curso": "MIEFIS",
+		"notas": [17]
+	}
+]

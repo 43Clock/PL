@@ -1,0 +1,44 @@
+[
+	{
+		"Nome": "The City is a Jungle",
+		"Participantes": ["Fumaxa","Richie Campbell","Julinho KSD"],
+		"Duracao": "4:20",
+		"Visualizações": "1M",
+		"Likes/Dislikes": ["20k","155"]
+	},
+	{
+		"Nome": "Sentimento Safari",
+		"Participantes": ["Julinho KSD"],
+		"Duracao": "3:25",
+		"Visualizações": "11.3M",
+		"Likes/Dislikes": ["109k","3k"]
+	},
+	{
+		"Nome": "Be Something",
+		"Participantes": ["Polo G","Lil Baby"],
+		"Duracao": "3:14",
+		"Visualizações": "33.4M",
+		"Likes/Dislikes": ["295k","7.7k"]
+	},
+	{
+		"Nome": "Tequila",
+		"Participantes": ["The Champs"],
+		"Duracao": "2:13",
+		"Visualizações": "1.2M",
+		"Likes/Dislikes": ["25k","714"]
+	},
+	{
+		"Nome": "Baby",
+		"Participantes": ["Justin Bieber","Ludacris"],
+		"Duracao": "3:39",
+		"Visualizações": "2.4mM",
+		"Likes/Dislikes": ["17M","15M"]
+	},
+	{
+		"Nome": "Never Gonna Give You Up",
+		"Participantes": ["Rick Astley"],
+		"Duracao": "3:33",
+		"Visualizações": "902M",
+		"Likes/Dislikes": ["8.9M","267k"]
+	}
+]

@@ -1,0 +1,26 @@
+[
+	{
+		"número": "A71823",
+		"nome": "Ana Maria",
+		"curso": "MIEI",
+		"notas_avg": 14.875,
+		"notas_sum": 59.5,
+		"notas": [12,14,15.5,18]
+	},
+	{
+		"número": "A89765",
+		"nome": "João Martins",
+		"curso": "LCC",
+		"notas_avg": 13.333333333333334,
+		"notas_sum": 40,
+		"notas": [11,16,13]
+	},
+	{
+		"número": "A54321",
+		"nome": "Paulo Correia",
+		"curso": "MIEFIS",
+		"notas_avg": 17.0,
+		"notas_sum": 17,
+		"notas": [17]
+	}
+]
