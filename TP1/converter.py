@@ -2,6 +2,7 @@ import re
 import sys
 from functools import reduce
 
+listaNumeros = re.compile(r'^\((\s*[0-9]+(\.[0-9]+)?\s*\,)*\s*[0-9]+(\.[0-9]+)?\s*\)$')
 
 def stringToList(a): #Transforma uma string numa lista de inteiros/floats
     match = re.search(r'\((.+)\)',a) #Utilizado para obter o que está entre os parentesis
@@ -15,8 +16,8 @@ def stringToList(a): #Transforma uma string numa lista de inteiros/floats
     return nums
 
 def listOperation(lista,op): #Transforma lista do csv em lista de JSON aplicando a opereção fornecida
-    if op == '' or not re.search(r'^\((\s*[0-9]+(\.[0-9]+)?\s*\,)*\s*[0-9]+(\.[0-9]+)?\s*\)$',lista): #Verifica se operação é nula ou se a lista não é só de numeros
-        if not re.search(r'^\((\s*[0-9]+(\.[0-9]+)?\s*\,)*\s*[0-9]+(\.[0-9]+)?\s*\)$',lista): #Se não for só de numero transforma numa lista de strings
+    if op == '' or not listaNumeros.search(lista): #Verifica se operação é nula ou se a lista não é só de numeros
+        if not listaNumeros.search(lista): #Se não for só de numero transforma numa lista de strings
             lista = re.sub(r'\(',r'["',lista)
             lista = re.sub(r'\)',r'"]',lista)
             lista = re.sub(r',',r'","',lista)
@@ -44,7 +45,7 @@ def transform(first_line,linha):
         if re.search(r'\*',first_line[i]): #Verifica se é ou não uma lista
             splited_first = re.split(r'\*',first_line[i].strip()) #Separa pelo * para ver as operações a realizar na lista (pode ter multiplas)
             ops = re.split(r',',splited_first[1]) #Separa pela , cada uma das operações
-            if re.search(r'^\((\s*[0-9]+(\.[0-9]+)?\s*\,)*\s*[0-9]+(\.[0-9]+)?\s*\)$',linha[i]): #Verifica se parcela tem apenas numeros (para verificar se é possivel fazer operações)
+            if listaNumeros.search(linha[i]): #Verifica se parcela tem apenas numeros (para verificar se é possivel fazer operações)
                 for j in range(len(ops)): #Percorre cada uma das operações
                     if ops[j] == '': #Se a operação for nula, imprime sem o nome da operação
                         output.write(f"\t\t\"{splited_first[0].strip()}\": {listOperation(linha[i].strip(),ops[j].strip())}")
