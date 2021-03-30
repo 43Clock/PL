@@ -2,7 +2,7 @@ import re
 import sys
 from functools import reduce
 
-listaNumeros = re.compile(r'^\((\s*[0-9]+(\.[0-9]+)?\s*\,)*\s*[0-9]+(\.[0-9]+)?\s*\)$')
+listaNumeros = re.compile(r'^\((\s*[-+]?\s*[0-9]+(\.[0-9]+)?\s*\,)*\s*[-+]?\s*[0-9]+(\.[0-9]+)?\s*\)$')
 
 def stringToList(a): #Transforma uma string numa lista de inteiros/floats
     match = re.search(r'\((.+)\)',a) #Utilizado para obter o que está entre os parentesis
@@ -62,7 +62,13 @@ def transform(first_line,linha):
                 else:
                     output.write(",\n")
         else: #Se não for uma lista imprime apenas os valores com os respetivos nomes
-            output.write(f"\t\t\"{first_line[i].strip()}\": \"{linha[i].strip()}\"")
+            if re.search(r'^\s*[-+]?\s*[0-9]+(\.[0-9]+)?$',linha[i]):
+                if re.search(r'\.',linha[i]):
+                    output.write(f"\t\t\"{first_line[i].strip()}\": {float(linha[i].strip())}")
+                else:
+                    output.write(f"\t\t\"{first_line[i].strip()}\": {int(linha[i].strip())}")
+            else:
+                output.write(f"\t\t\"{first_line[i].strip()}\": \"{linha[i].strip()}\"")
             if i == len(first_line)-1:
                 output.write("\n")
             else:
