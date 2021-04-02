@@ -16,7 +16,7 @@ def stringToList(a): #Transforma uma string numa lista de inteiros/floats
     return nums
 
 def listOperation(lista,op): #Transforma lista do csv em lista de JSON aplicando a opereção fornecida
-    if op == '' or not listaNumeros.search(lista): #Verifica se operação é nula ou se a lista não é só de numeros
+    if op == '':
         if not listaNumeros.search(lista): #Se não for só de numero transforma numa lista de strings
             lista = re.sub(r'\(',r'["',lista)
             lista = re.sub(r'\)',r'"]',lista)
