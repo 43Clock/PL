@@ -1,8 +1,9 @@
-//{'a': 0, 'b': 1}
-//{'c': 2, 'd': 3}
-//{'array': (4, 13)}
-//{'array2d': (14, 19, 3)}
+//{'a': 0, 'test': 1, 'b': 2}
+//{'c': 3, 'd': 4}
+//{'array': (5, 14)}
+//{'array2d': (15, 20, 3)}
 //{}
+pushi 0
 pushi 0
 pushi 3
 pushf 0.0
@@ -11,30 +12,30 @@ pushn 10
 pushn 6
 START
 pushgp
-pushi 4
+pushi 5
 padd
 pushi 5
 pushi 5
 storen
 pushgp
-pushi 14
+pushi 15
 padd
 pushi 2
 pushi 3
 storen
 pushgp
-pushi 14
+pushi 15
 padd
 pushi 0
 pushgp
-pushi 4
+pushi 5
 padd
 pushi 5
 loadn
 
 storen
 pushgp
-pushi 14
+pushi 15
 padd
 pushi 5
 pushi 2
@@ -43,7 +44,7 @@ pushi 2
 pushi 10
 pushi 2
 pushgp
-pushi 14
+pushi 15
 padd
 pushi 2
 loadn
@@ -59,4 +60,71 @@ mul
 add
 
 storen
+pushgp
+pushi 15
+padd
+pushi 5
+loadn
+
+pushgp
+pushi 5
+padd
+pushi 5
+loadn
+
+pushgp
+pushi 15
+padd
+pushi 2
+loadn
+
+mul
+
+sub
+
+storeg 0
+pushgp
+pushi 15
+padd
+pushi 2
+loadn
+
+pushi 2
+sup
+
+storeg 0
+pushi 1
+pushi 0
+equal
+
+pushi 1
+pushi 0
+equal
+
+pushi 1
+pushi 1
+equal
+
+add
+pushi 0
+sup
+
+mul
+
+storeg 1
+pushg 1
+writei
+pushgp
+pushi 5
+padd
+pushi 5
+loadn
+writei
+pushgp
+pushi 15
+padd
+pushi 2
+loadn
+writei
+STOP
 

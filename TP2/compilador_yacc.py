@@ -6,8 +6,8 @@ output = open("output.vm","w+")
 from compilador_lex import tokens
 
 def p_body(p):
-    "body : '(' atribuicoes operacoes"
-    p[0] = p[2] + "START\n" + p[3]
+    "body : atribuicoes operacoes"
+    p[0] = p[1] + "START\n" + p[2] + "STOP\n"
     
 def p_atribuicoes_atribuicao(p):
     "atribuicoes : atribuicoes atribuicao"
@@ -62,16 +62,26 @@ def p_atribuicao_string(p):
 
 
 def p_operacoes_operacao(p):
-    "operacoes : operacoes operacao "
+    "operacoes : operacoes operacao"
     p[0] = p[1] + p[2]
 
 def p_operacoes_fim(p):
     "operacoes : "
     p[0] = ""
 
+def p_operacao_variavel(p):
+    "operacao : ID EQUAL expressoes ';'"
+    aux = f"{p[3]}\n"
+    if p[1].strip() in p.parser.variaveis_int:
+        aux += f"storeg {p.parser.variaveis_int[p[1].strip()]}\n"
+    elif p[1].strip() in p.parser.variaveis_float:
+        aux += f"storeg {p.parser.variaveis_float[p[1].strip()]}\n"
+    p[0] = aux
+
+
 #TODO verificar que n está outofbounds e que de facto é um array
 def p_operacao_array_valor(p):
-    "operacao : ID '[' INT ']' EQUAL expressao ';' "
+    "operacao : ID '[' INT ']' EQUAL expressoes ';' "
     aux  = "pushgp\n"
     aux += f"pushi {p.parser.variaveis_arrays[p[1]][0]}\n"
     aux += "padd\n"
@@ -82,14 +92,23 @@ def p_operacao_array_valor(p):
 
 #TODO verificar que n está outofbounds e que de facto é um array
 def p_operacao_array2d_valor(p):
-    "operacao : ID '[' INT ']' '[' INT ']' EQUAL expressao ';' "
+    "operacao : ID '[' INT ']' '[' INT ']' EQUAL expressoes ';' "
     aux  = "pushgp\n"
-    aux += f"pushi {p.parser.variaveis_arrays2d[p[1]][0]}\n"
+    aux += f"pushi {p.parser.variaveis_arrays2d[p[1].strip()][0]}\n"
     aux += "padd\n"
-    aux += f"pushi {p[3]*p.parser.variaveis_arrays2d[p[1]][2]+p[6]}\n"
+    aux += f"pushi {p[3]*p.parser.variaveis_arrays2d[p[1].strip()][2]+p[6]}\n"
     aux += f"{p[9]}\n"
     aux += "storen\n"
     p[0] = aux
+
+
+def p_expressoes_expressao(p):
+    "expressoes : expressao"
+    p[0] = p[1]
+
+def p_expressoes_expressao_logica(p):
+    "expressoes : expressao_logica"
+    p[0] = p[1]
 
 def p_expressao_mais(p):
     "expressao : expressao '+' termo"
@@ -135,7 +154,7 @@ def p_fator_int(p):
 def p_fator_array(p):
     "fator : ID '[' INT ']' "
     aux  = "pushgp\n"
-    aux += f"pushi {p.parser.variaveis_arrays[p[1]][0]}\n"
+    aux += f"pushi {p.parser.variaveis_arrays[p[1].strip()][0]}\n"
     aux += "padd\n"
     aux += f"pushi {p[3]}\n"
     aux += "loadn\n"
@@ -144,25 +163,115 @@ def p_fator_array(p):
 def p_fator_array2d(p):
     "fator : ID '[' INT ']' '[' INT ']' "
     aux  = "pushgp\n"
-    aux += f"pushi {p.parser.variaveis_arrays2d[p[1]][0]}\n"
+    aux += f"pushi {p.parser.variaveis_arrays2d[p[1].strip()][0]}\n"
     aux += "padd\n"
-    aux += f"pushi {p[3]*p.parser.variaveis_arrays2d[p[1]][2]+p[6]}\n"
+    aux += f"pushi {p[3]*p.parser.variaveis_arrays2d[p[1].strip()][2]+p[6]}\n"
     aux += "loadn\n"
     p[0] = aux
 
+def p_expressao_relacional_expressao_sup(p):
+    "expressao_relacional : expressao '>' expressao"
+    aux = f"{p[1]}\n"
+    aux += f"{p[3]}\n"
+    aux += "sup\n"
+    p[0] = aux
+
+def p_expressao_relacional_expressao_inf(p):
+    "expressao_relacional : expressao '<' expressao"
+    aux = f"{p[1]}\n"
+    aux += f"{p[3]}\n"
+    aux += "inf\n"
+    p[0] = aux
+
+def p_expressao_relacional_expressao_inf_eq(p):
+    "expressao_relacional : expressao LESS_EQUAL expressao"
+    aux = f"{p[1]}\n"
+    aux += f"{p[3]}\n"
+    aux += "infeq\n"
+    p[0] = aux
+
+def p_expressao_relacional_expressao_sup_eq(p):
+    "expressao_relacional : expressao MORE_EQUAL expressao"
+    aux = f"{p[1]}\n"
+    aux += f"{p[3]}\n"
+    aux += "supeq\n"
+    p[0] = aux
+
+def p_expressao_relacional_expressao_eq(p):
+    "expressao_relacional : expressao EQUAL_EQUAL expressao"
+    aux = f"{p[1]}\n"
+    aux += f"{p[3]}\n"
+    aux += "equal\n"
+    p[0] = aux
+
+def p_expressao_logica_not(p):
+    "expressao_logica : '!' fator_logico"
+    aux = f"{p[2]}\n"
+    aux += "not\n"
+    p[0] = aux
+
+def p_expressao_logica_and(p):
+    "expressao_logica : expressao_logica AND fator_logico"
+    aux = f"{p[1]}\n"
+    aux += f"{p[3]}\n"
+    aux += "mul\n"
+    p[0] = aux
+ 
+def p_expressao_logica_or(p):
+    "expressao_logica : expressao_logica OR fator_logico"
+    aux = f"{p[1]}\n"
+    aux += f"{p[3]}\n"
+    aux += "add\n"
+    aux += "pushi 0\n"
+    aux += "sup\n"
+    p[0] = aux
     
+def p_expressao_logica_relacional(p):
+    "expressao_logica : fator_logico"
+    p[0] = p[1]
 
 
+def p_fator_logico_expressao_logica(p):
+    "fator_logico : '(' expressao_logica ')' "
+    p[0] = p[2]
+
+def p_fator_logico_expressao_relacional(p):
+    "fator_logico : expressao_relacional "
+    p[0] = p[1]
 
 
+def p_imprime_var(p):
+    "operacao : PRINT ID ';' "
+    aux = ""
+    if p[2].strip() in p.parser.variaveis_int:
+        aux += f"pushg {p.parser.variaveis_int[p[2].strip()]}\n"
+        aux += f"writei\n"
+    elif p[2].strip() in p.parser.variaveis_float:
+        aux += f"pushg {p.parser.variaveis_float[p[2].strip()]}\n"
+        aux += f"writef\n"
+    elif p[2].strip() in p.parser.variaveis_string:
+        aux += f"pushg {p.parser.variaveis_string[p[2].strip()]}\n"
+        aux += f"writes\n"
+    p[0] = aux     
 
+#TODO imprimir com \n
+def p_imprime_array(p):
+    "operacao : PRINT ID '[' INT ']' ';' "
+    aux  = "pushgp\n"
+    aux += f"pushi {p.parser.variaveis_arrays[p[2]][0]}\n"
+    aux += "padd\n"
+    aux += f"pushi {p[4]}\n"
+    aux += "loadn\nwritei\n"
+    p[0] = aux
 
-
-
-
-
-
-
+def p_imprime_array2d(p):
+    "operacao : PRINT ID '[' INT ']' '[' INT ']' ';' "
+    aux  = "pushgp\n"
+    aux += f"pushi {p.parser.variaveis_arrays2d[p[2].strip()][0]}\n"
+    aux += "padd\n"
+    aux += f"pushi {p[4]*p.parser.variaveis_arrays2d[p[2].strip()][2]+p[7]}\n"
+    aux += "loadn\nwritei\n"
+    p[0] = aux
 
 
 def p_error(p):

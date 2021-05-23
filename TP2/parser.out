@@ -3,7 +3,7 @@ Created by PLY version 3.11 (http://www.dabeaz.com/ply)
 Grammar
 
 Rule 0     S' -> body
-Rule 1     body -> ( atribuicoes operacoes
+Rule 1     body -> atribuicoes operacoes
 Rule 2     atribuicoes -> atribuicoes atribuicao
 Rule 3     atribuicoes -> <empty>
 Rule 4     atribuicao -> INT_A ID EQUAL INT ;
@@ -15,39 +15,65 @@ Rule 9     atribuicao -> INT_A ID [ INT ] [ INT ] ;
 Rule 10    atribuicao -> STRING_A ID EQUAL STRING ;
 Rule 11    operacoes -> operacoes operacao
 Rule 12    operacoes -> <empty>
-Rule 13    operacao -> ID [ INT ] EQUAL expressao ;
-Rule 14    operacao -> ID [ INT ] [ INT ] EQUAL expressao ;
-Rule 15    expressao -> expressao + termo
-Rule 16    expressao -> expressao - termo
-Rule 17    expressao -> termo
-Rule 18    termo -> termo * fator
-Rule 19    termo -> termo / fator
-Rule 20    termo -> fator
-Rule 21    fator -> INT
-Rule 22    fator -> ( expressao )
-Rule 23    fator -> ID
-Rule 24    fator -> ID [ INT ]
-Rule 25    fator -> ID [ INT ] [ INT ]
+Rule 13    operacao -> ID EQUAL expressoes ;
+Rule 14    operacao -> ID [ INT ] EQUAL expressoes ;
+Rule 15    operacao -> ID [ INT ] [ INT ] EQUAL expressoes ;
+Rule 16    expressoes -> expressao
+Rule 17    expressoes -> expressao_logica
+Rule 18    expressao -> expressao + termo
+Rule 19    expressao -> expressao - termo
+Rule 20    expressao -> termo
+Rule 21    termo -> termo * fator
+Rule 22    termo -> termo / fator
+Rule 23    termo -> fator
+Rule 24    fator -> INT
+Rule 25    fator -> ( expressao )
+Rule 26    fator -> ID
+Rule 27    fator -> ID [ INT ]
+Rule 28    fator -> ID [ INT ] [ INT ]
+Rule 29    expressao_relacional -> expressao > expressao
+Rule 30    expressao_relacional -> expressao < expressao
+Rule 31    expressao_relacional -> expressao LESS_EQUAL expressao
+Rule 32    expressao_relacional -> expressao MORE_EQUAL expressao
+Rule 33    expressao_relacional -> expressao EQUAL_EQUAL expressao
+Rule 34    expressao_logica -> ! fator_logico
+Rule 35    expressao_logica -> expressao_logica AND fator_logico
+Rule 36    expressao_logica -> expressao_logica OR fator_logico
+Rule 37    expressao_logica -> fator_logico
+Rule 38    fator_logico -> ( expressao_logica )
+Rule 39    fator_logico -> expressao_relacional
+Rule 40    operacao -> PRINT ID ;
+Rule 41    operacao -> PRINT ID [ INT ] ;
+Rule 42    operacao -> PRINT ID [ INT ] [ INT ] ;
 
 Terminals, with rules where they appear
 
-(                    : 1 22
-)                    : 22
-*                    : 18
-+                    : 15
--                    : 16
-/                    : 19
-;                    : 4 5 6 7 8 9 10 13 14
-EQUAL                : 4 5 10 13 14
+!                    : 34
+(                    : 25 38
+)                    : 25 38
+*                    : 21
++                    : 18
+-                    : 19
+/                    : 22
+;                    : 4 5 6 7 8 9 10 13 14 15 40 41 42
+<                    : 30
+>                    : 29
+AND                  : 35
+EQUAL                : 4 5 10 13 14 15
+EQUAL_EQUAL          : 33
 FLOAT                : 5
 FLOAT_A              : 5 7
-ID                   : 4 5 6 7 8 9 10 13 14 23 24 25
-INT                  : 4 8 9 9 13 14 14 21 24 25 25
+ID                   : 4 5 6 7 8 9 10 13 14 15 26 27 28 40 41 42
+INT                  : 4 8 9 9 14 15 15 24 27 28 28 41 42 42
 INT_A                : 4 6 8 9
+LESS_EQUAL           : 31
+MORE_EQUAL           : 32
+OR                   : 36
+PRINT                : 40 41 42
 STRING               : 10
 STRING_A             : 10
-[                    : 8 9 9 13 14 14 24 25 25
-]                    : 8 9 9 13 14 14 24 25 25
+[                    : 8 9 9 14 15 15 27 28 28 41 42 42
+]                    : 8 9 9 14 15 15 27 28 28 41 42 42
 error                : 
 
 Nonterminals, with rules where they appear
@@ -55,22 +81,34 @@ Nonterminals, with rules where they appear
 atribuicao           : 2
 atribuicoes          : 1 2
 body                 : 0
-expressao            : 13 14 15 16 22
-fator                : 18 19 20
+expressao            : 16 18 19 25 29 29 30 30 31 31 32 32 33 33
+expressao_logica     : 17 35 36 38
+expressao_relacional : 39
+expressoes           : 13 14 15
+fator                : 21 22 23
+fator_logico         : 34 35 36 37
 operacao             : 11
 operacoes            : 1 11
-termo                : 15 16 17 18 19
+termo                : 18 19 20 21 22
 
 Parsing method: LALR
 
 state 0
 
     (0) S' -> . body
-    (1) body -> . ( atribuicoes operacoes
+    (1) body -> . atribuicoes operacoes
+    (2) atribuicoes -> . atribuicoes atribuicao
+    (3) atribuicoes -> .
 
-    (               shift and go to state 2
+    INT_A           reduce using rule 3 (atribuicoes -> .)
+    FLOAT_A         reduce using rule 3 (atribuicoes -> .)
+    STRING_A        reduce using rule 3 (atribuicoes -> .)
+    ID              reduce using rule 3 (atribuicoes -> .)
+    PRINT           reduce using rule 3 (atribuicoes -> .)
+    $end            reduce using rule 3 (atribuicoes -> .)
 
     body                           shift and go to state 1
+    atribuicoes                    shift and go to state 2
 
 state 1
 
@@ -80,21 +118,7 @@ state 1
 
 state 2
 
-    (1) body -> ( . atribuicoes operacoes
-    (2) atribuicoes -> . atribuicoes atribuicao
-    (3) atribuicoes -> .
-
-    INT_A           reduce using rule 3 (atribuicoes -> .)
-    FLOAT_A         reduce using rule 3 (atribuicoes -> .)
-    STRING_A        reduce using rule 3 (atribuicoes -> .)
-    ID              reduce using rule 3 (atribuicoes -> .)
-    $end            reduce using rule 3 (atribuicoes -> .)
-
-    atribuicoes                    shift and go to state 3
-
-state 3
-
-    (1) body -> ( atribuicoes . operacoes
+    (1) body -> atribuicoes . operacoes
     (2) atribuicoes -> atribuicoes . atribuicao
     (11) operacoes -> . operacoes operacao
     (12) operacoes -> .
@@ -107,27 +131,33 @@ state 3
     (10) atribuicao -> . STRING_A ID EQUAL STRING ;
 
     ID              reduce using rule 12 (operacoes -> .)
+    PRINT           reduce using rule 12 (operacoes -> .)
     $end            reduce using rule 12 (operacoes -> .)
-    INT_A           shift and go to state 6
-    FLOAT_A         shift and go to state 7
-    STRING_A        shift and go to state 8
+    INT_A           shift and go to state 5
+    FLOAT_A         shift and go to state 6
+    STRING_A        shift and go to state 7
 
-    operacoes                      shift and go to state 4
-    atribuicao                     shift and go to state 5
+    operacoes                      shift and go to state 3
+    atribuicao                     shift and go to state 4
+
+state 3
+
+    (1) body -> atribuicoes operacoes .
+    (11) operacoes -> operacoes . operacao
+    (13) operacao -> . ID EQUAL expressoes ;
+    (14) operacao -> . ID [ INT ] EQUAL expressoes ;
+    (15) operacao -> . ID [ INT ] [ INT ] EQUAL expressoes ;
+    (40) operacao -> . PRINT ID ;
+    (41) operacao -> . PRINT ID [ INT ] ;
+    (42) operacao -> . PRINT ID [ INT ] [ INT ] ;
+
+    $end            reduce using rule 1 (body -> atribuicoes operacoes .)
+    ID              shift and go to state 9
+    PRINT           shift and go to state 10
+
+    operacao                       shift and go to state 8
 
 state 4
-
-    (1) body -> ( atribuicoes operacoes .
-    (11) operacoes -> operacoes . operacao
-    (13) operacao -> . ID [ INT ] EQUAL expressao ;
-    (14) operacao -> . ID [ INT ] [ INT ] EQUAL expressao ;
-
-    $end            reduce using rule 1 (body -> ( atribuicoes operacoes .)
-    ID              shift and go to state 10
-
-    operacao                       shift and go to state 9
-
-state 5
 
     (2) atribuicoes -> atribuicoes atribuicao .
 
@@ -135,10 +165,11 @@ state 5
     FLOAT_A         reduce using rule 2 (atribuicoes -> atribuicoes atribuicao .)
     STRING_A        reduce using rule 2 (atribuicoes -> atribuicoes atribuicao .)
     ID              reduce using rule 2 (atribuicoes -> atribuicoes atribuicao .)
+    PRINT           reduce using rule 2 (atribuicoes -> atribuicoes atribuicao .)
     $end            reduce using rule 2 (atribuicoes -> atribuicoes atribuicao .)
 
 
-state 6
+state 5
 
     (4) atribuicao -> INT_A . ID EQUAL INT ;
     (6) atribuicao -> INT_A . ID ;
@@ -148,7 +179,7 @@ state 6
     ID              shift and go to state 11
 
 
-state 7
+state 6
 
     (5) atribuicao -> FLOAT_A . ID EQUAL FLOAT ;
     (7) atribuicao -> FLOAT_A . ID ;
@@ -156,27 +187,39 @@ state 7
     ID              shift and go to state 12
 
 
-state 8
+state 7
 
     (10) atribuicao -> STRING_A . ID EQUAL STRING ;
 
     ID              shift and go to state 13
 
 
-state 9
+state 8
 
     (11) operacoes -> operacoes operacao .
 
     ID              reduce using rule 11 (operacoes -> operacoes operacao .)
+    PRINT           reduce using rule 11 (operacoes -> operacoes operacao .)
     $end            reduce using rule 11 (operacoes -> operacoes operacao .)
+
+
+state 9
+
+    (13) operacao -> ID . EQUAL expressoes ;
+    (14) operacao -> ID . [ INT ] EQUAL expressoes ;
+    (15) operacao -> ID . [ INT ] [ INT ] EQUAL expressoes ;
+
+    EQUAL           shift and go to state 14
+    [               shift and go to state 15
 
 
 state 10
 
-    (13) operacao -> ID . [ INT ] EQUAL expressao ;
-    (14) operacao -> ID . [ INT ] [ INT ] EQUAL expressao ;
+    (40) operacao -> PRINT . ID ;
+    (41) operacao -> PRINT . ID [ INT ] ;
+    (42) operacao -> PRINT . ID [ INT ] [ INT ] ;
 
-    [               shift and go to state 14
+    ID              shift and go to state 16
 
 
 state 11
@@ -186,9 +229,9 @@ state 11
     (8) atribuicao -> INT_A ID . [ INT ] ;
     (9) atribuicao -> INT_A ID . [ INT ] [ INT ] ;
 
-    EQUAL           shift and go to state 15
-    ;               shift and go to state 16
-    [               shift and go to state 17
+    EQUAL           shift and go to state 17
+    ;               shift and go to state 18
+    [               shift and go to state 19
 
 
 state 12
@@ -196,33 +239,84 @@ state 12
     (5) atribuicao -> FLOAT_A ID . EQUAL FLOAT ;
     (7) atribuicao -> FLOAT_A ID . ;
 
-    EQUAL           shift and go to state 18
-    ;               shift and go to state 19
+    EQUAL           shift and go to state 20
+    ;               shift and go to state 21
 
 
 state 13
 
     (10) atribuicao -> STRING_A ID . EQUAL STRING ;
 
-    EQUAL           shift and go to state 20
+    EQUAL           shift and go to state 22
 
 
 state 14
 
-    (13) operacao -> ID [ . INT ] EQUAL expressao ;
-    (14) operacao -> ID [ . INT ] [ INT ] EQUAL expressao ;
+    (13) operacao -> ID EQUAL . expressoes ;
+    (16) expressoes -> . expressao
+    (17) expressoes -> . expressao_logica
+    (18) expressao -> . expressao + termo
+    (19) expressao -> . expressao - termo
+    (20) expressao -> . termo
+    (34) expressao_logica -> . ! fator_logico
+    (35) expressao_logica -> . expressao_logica AND fator_logico
+    (36) expressao_logica -> . expressao_logica OR fator_logico
+    (37) expressao_logica -> . fator_logico
+    (21) termo -> . termo * fator
+    (22) termo -> . termo / fator
+    (23) termo -> . fator
+    (38) fator_logico -> . ( expressao_logica )
+    (39) fator_logico -> . expressao_relacional
+    (24) fator -> . INT
+    (25) fator -> . ( expressao )
+    (26) fator -> . ID
+    (27) fator -> . ID [ INT ]
+    (28) fator -> . ID [ INT ] [ INT ]
+    (29) expressao_relacional -> . expressao > expressao
+    (30) expressao_relacional -> . expressao < expressao
+    (31) expressao_relacional -> . expressao LESS_EQUAL expressao
+    (32) expressao_relacional -> . expressao MORE_EQUAL expressao
+    (33) expressao_relacional -> . expressao EQUAL_EQUAL expressao
 
-    INT             shift and go to state 21
+    !               shift and go to state 28
+    (               shift and go to state 31
+    INT             shift and go to state 33
+    ID              shift and go to state 23
 
+    expressoes                     shift and go to state 24
+    expressao                      shift and go to state 25
+    expressao_logica               shift and go to state 26
+    termo                          shift and go to state 27
+    fator_logico                   shift and go to state 29
+    fator                          shift and go to state 30
+    expressao_relacional           shift and go to state 32
 
 state 15
 
-    (4) atribuicao -> INT_A ID EQUAL . INT ;
+    (14) operacao -> ID [ . INT ] EQUAL expressoes ;
+    (15) operacao -> ID [ . INT ] [ INT ] EQUAL expressoes ;
 
-    INT             shift and go to state 22
+    INT             shift and go to state 34
 
 
 state 16
+
+    (40) operacao -> PRINT ID . ;
+    (41) operacao -> PRINT ID . [ INT ] ;
+    (42) operacao -> PRINT ID . [ INT ] [ INT ] ;
+
+    ;               shift and go to state 35
+    [               shift and go to state 36
+
+
+state 17
+
+    (4) atribuicao -> INT_A ID EQUAL . INT ;
+
+    INT             shift and go to state 37
+
+
+state 18
 
     (6) atribuicao -> INT_A ID ; .
 
@@ -230,25 +324,26 @@ state 16
     FLOAT_A         reduce using rule 6 (atribuicao -> INT_A ID ; .)
     STRING_A        reduce using rule 6 (atribuicao -> INT_A ID ; .)
     ID              reduce using rule 6 (atribuicao -> INT_A ID ; .)
+    PRINT           reduce using rule 6 (atribuicao -> INT_A ID ; .)
     $end            reduce using rule 6 (atribuicao -> INT_A ID ; .)
 
 
-state 17
+state 19
 
     (8) atribuicao -> INT_A ID [ . INT ] ;
     (9) atribuicao -> INT_A ID [ . INT ] [ INT ] ;
 
-    INT             shift and go to state 23
+    INT             shift and go to state 38
 
 
-state 18
+state 20
 
     (5) atribuicao -> FLOAT_A ID EQUAL . FLOAT ;
 
-    FLOAT           shift and go to state 24
+    FLOAT           shift and go to state 39
 
 
-state 19
+state 21
 
     (7) atribuicao -> FLOAT_A ID ; .
 
@@ -256,63 +351,625 @@ state 19
     FLOAT_A         reduce using rule 7 (atribuicao -> FLOAT_A ID ; .)
     STRING_A        reduce using rule 7 (atribuicao -> FLOAT_A ID ; .)
     ID              reduce using rule 7 (atribuicao -> FLOAT_A ID ; .)
+    PRINT           reduce using rule 7 (atribuicao -> FLOAT_A ID ; .)
     $end            reduce using rule 7 (atribuicao -> FLOAT_A ID ; .)
-
-
-state 20
-
-    (10) atribuicao -> STRING_A ID EQUAL . STRING ;
-
-    STRING          shift and go to state 25
-
-
-state 21
-
-    (13) operacao -> ID [ INT . ] EQUAL expressao ;
-    (14) operacao -> ID [ INT . ] [ INT ] EQUAL expressao ;
-
-    ]               shift and go to state 26
 
 
 state 22
 
-    (4) atribuicao -> INT_A ID EQUAL INT . ;
+    (10) atribuicao -> STRING_A ID EQUAL . STRING ;
 
-    ;               shift and go to state 27
+    STRING          shift and go to state 40
 
 
 state 23
 
-    (8) atribuicao -> INT_A ID [ INT . ] ;
-    (9) atribuicao -> INT_A ID [ INT . ] [ INT ] ;
+    (26) fator -> ID .
+    (27) fator -> ID . [ INT ]
+    (28) fator -> ID . [ INT ] [ INT ]
 
-    ]               shift and go to state 28
+    *               reduce using rule 26 (fator -> ID .)
+    /               reduce using rule 26 (fator -> ID .)
+    +               reduce using rule 26 (fator -> ID .)
+    -               reduce using rule 26 (fator -> ID .)
+    >               reduce using rule 26 (fator -> ID .)
+    <               reduce using rule 26 (fator -> ID .)
+    LESS_EQUAL      reduce using rule 26 (fator -> ID .)
+    MORE_EQUAL      reduce using rule 26 (fator -> ID .)
+    EQUAL_EQUAL     reduce using rule 26 (fator -> ID .)
+    ;               reduce using rule 26 (fator -> ID .)
+    )               reduce using rule 26 (fator -> ID .)
+    AND             reduce using rule 26 (fator -> ID .)
+    OR              reduce using rule 26 (fator -> ID .)
+    [               shift and go to state 41
 
 
 state 24
 
-    (5) atribuicao -> FLOAT_A ID EQUAL FLOAT . ;
+    (13) operacao -> ID EQUAL expressoes . ;
 
-    ;               shift and go to state 29
+    ;               shift and go to state 42
 
 
 state 25
 
-    (10) atribuicao -> STRING_A ID EQUAL STRING . ;
+    (16) expressoes -> expressao .
+    (18) expressao -> expressao . + termo
+    (19) expressao -> expressao . - termo
+    (29) expressao_relacional -> expressao . > expressao
+    (30) expressao_relacional -> expressao . < expressao
+    (31) expressao_relacional -> expressao . LESS_EQUAL expressao
+    (32) expressao_relacional -> expressao . MORE_EQUAL expressao
+    (33) expressao_relacional -> expressao . EQUAL_EQUAL expressao
 
-    ;               shift and go to state 30
+    ;               reduce using rule 16 (expressoes -> expressao .)
+    +               shift and go to state 43
+    -               shift and go to state 44
+    >               shift and go to state 45
+    <               shift and go to state 46
+    LESS_EQUAL      shift and go to state 47
+    MORE_EQUAL      shift and go to state 48
+    EQUAL_EQUAL     shift and go to state 49
 
 
 state 26
 
-    (13) operacao -> ID [ INT ] . EQUAL expressao ;
-    (14) operacao -> ID [ INT ] . [ INT ] EQUAL expressao ;
+    (17) expressoes -> expressao_logica .
+    (35) expressao_logica -> expressao_logica . AND fator_logico
+    (36) expressao_logica -> expressao_logica . OR fator_logico
 
-    EQUAL           shift and go to state 32
-    [               shift and go to state 31
+    ;               reduce using rule 17 (expressoes -> expressao_logica .)
+    AND             shift and go to state 50
+    OR              shift and go to state 51
 
 
 state 27
+
+    (20) expressao -> termo .
+    (21) termo -> termo . * fator
+    (22) termo -> termo . / fator
+
+    +               reduce using rule 20 (expressao -> termo .)
+    -               reduce using rule 20 (expressao -> termo .)
+    >               reduce using rule 20 (expressao -> termo .)
+    <               reduce using rule 20 (expressao -> termo .)
+    LESS_EQUAL      reduce using rule 20 (expressao -> termo .)
+    MORE_EQUAL      reduce using rule 20 (expressao -> termo .)
+    EQUAL_EQUAL     reduce using rule 20 (expressao -> termo .)
+    ;               reduce using rule 20 (expressao -> termo .)
+    )               reduce using rule 20 (expressao -> termo .)
+    AND             reduce using rule 20 (expressao -> termo .)
+    OR              reduce using rule 20 (expressao -> termo .)
+    *               shift and go to state 52
+    /               shift and go to state 53
+
+
+state 28
+
+    (34) expressao_logica -> ! . fator_logico
+    (38) fator_logico -> . ( expressao_logica )
+    (39) fator_logico -> . expressao_relacional
+    (29) expressao_relacional -> . expressao > expressao
+    (30) expressao_relacional -> . expressao < expressao
+    (31) expressao_relacional -> . expressao LESS_EQUAL expressao
+    (32) expressao_relacional -> . expressao MORE_EQUAL expressao
+    (33) expressao_relacional -> . expressao EQUAL_EQUAL expressao
+    (18) expressao -> . expressao + termo
+    (19) expressao -> . expressao - termo
+    (20) expressao -> . termo
+    (21) termo -> . termo * fator
+    (22) termo -> . termo / fator
+    (23) termo -> . fator
+    (24) fator -> . INT
+    (25) fator -> . ( expressao )
+    (26) fator -> . ID
+    (27) fator -> . ID [ INT ]
+    (28) fator -> . ID [ INT ] [ INT ]
+
+    (               shift and go to state 31
+    INT             shift and go to state 33
+    ID              shift and go to state 23
+
+    fator_logico                   shift and go to state 54
+    expressao_relacional           shift and go to state 32
+    expressao                      shift and go to state 55
+    termo                          shift and go to state 27
+    fator                          shift and go to state 30
+
+state 29
+
+    (37) expressao_logica -> fator_logico .
+
+    AND             reduce using rule 37 (expressao_logica -> fator_logico .)
+    OR              reduce using rule 37 (expressao_logica -> fator_logico .)
+    ;               reduce using rule 37 (expressao_logica -> fator_logico .)
+    )               reduce using rule 37 (expressao_logica -> fator_logico .)
+
+
+state 30
+
+    (23) termo -> fator .
+
+    *               reduce using rule 23 (termo -> fator .)
+    /               reduce using rule 23 (termo -> fator .)
+    +               reduce using rule 23 (termo -> fator .)
+    -               reduce using rule 23 (termo -> fator .)
+    >               reduce using rule 23 (termo -> fator .)
+    <               reduce using rule 23 (termo -> fator .)
+    LESS_EQUAL      reduce using rule 23 (termo -> fator .)
+    MORE_EQUAL      reduce using rule 23 (termo -> fator .)
+    EQUAL_EQUAL     reduce using rule 23 (termo -> fator .)
+    ;               reduce using rule 23 (termo -> fator .)
+    )               reduce using rule 23 (termo -> fator .)
+    AND             reduce using rule 23 (termo -> fator .)
+    OR              reduce using rule 23 (termo -> fator .)
+
+
+state 31
+
+    (38) fator_logico -> ( . expressao_logica )
+    (25) fator -> ( . expressao )
+    (34) expressao_logica -> . ! fator_logico
+    (35) expressao_logica -> . expressao_logica AND fator_logico
+    (36) expressao_logica -> . expressao_logica OR fator_logico
+    (37) expressao_logica -> . fator_logico
+    (18) expressao -> . expressao + termo
+    (19) expressao -> . expressao - termo
+    (20) expressao -> . termo
+    (38) fator_logico -> . ( expressao_logica )
+    (39) fator_logico -> . expressao_relacional
+    (21) termo -> . termo * fator
+    (22) termo -> . termo / fator
+    (23) termo -> . fator
+    (29) expressao_relacional -> . expressao > expressao
+    (30) expressao_relacional -> . expressao < expressao
+    (31) expressao_relacional -> . expressao LESS_EQUAL expressao
+    (32) expressao_relacional -> . expressao MORE_EQUAL expressao
+    (33) expressao_relacional -> . expressao EQUAL_EQUAL expressao
+    (24) fator -> . INT
+    (25) fator -> . ( expressao )
+    (26) fator -> . ID
+    (27) fator -> . ID [ INT ]
+    (28) fator -> . ID [ INT ] [ INT ]
+
+    !               shift and go to state 28
+    (               shift and go to state 31
+    INT             shift and go to state 33
+    ID              shift and go to state 23
+
+    expressao_logica               shift and go to state 56
+    expressao                      shift and go to state 57
+    fator_logico                   shift and go to state 29
+    termo                          shift and go to state 27
+    expressao_relacional           shift and go to state 32
+    fator                          shift and go to state 30
+
+state 32
+
+    (39) fator_logico -> expressao_relacional .
+
+    AND             reduce using rule 39 (fator_logico -> expressao_relacional .)
+    OR              reduce using rule 39 (fator_logico -> expressao_relacional .)
+    ;               reduce using rule 39 (fator_logico -> expressao_relacional .)
+    )               reduce using rule 39 (fator_logico -> expressao_relacional .)
+
+
+state 33
+
+    (24) fator -> INT .
+
+    *               reduce using rule 24 (fator -> INT .)
+    /               reduce using rule 24 (fator -> INT .)
+    +               reduce using rule 24 (fator -> INT .)
+    -               reduce using rule 24 (fator -> INT .)
+    >               reduce using rule 24 (fator -> INT .)
+    <               reduce using rule 24 (fator -> INT .)
+    LESS_EQUAL      reduce using rule 24 (fator -> INT .)
+    MORE_EQUAL      reduce using rule 24 (fator -> INT .)
+    EQUAL_EQUAL     reduce using rule 24 (fator -> INT .)
+    ;               reduce using rule 24 (fator -> INT .)
+    )               reduce using rule 24 (fator -> INT .)
+    AND             reduce using rule 24 (fator -> INT .)
+    OR              reduce using rule 24 (fator -> INT .)
+
+
+state 34
+
+    (14) operacao -> ID [ INT . ] EQUAL expressoes ;
+    (15) operacao -> ID [ INT . ] [ INT ] EQUAL expressoes ;
+
+    ]               shift and go to state 58
+
+
+state 35
+
+    (40) operacao -> PRINT ID ; .
+
+    ID              reduce using rule 40 (operacao -> PRINT ID ; .)
+    PRINT           reduce using rule 40 (operacao -> PRINT ID ; .)
+    $end            reduce using rule 40 (operacao -> PRINT ID ; .)
+
+
+state 36
+
+    (41) operacao -> PRINT ID [ . INT ] ;
+    (42) operacao -> PRINT ID [ . INT ] [ INT ] ;
+
+    INT             shift and go to state 59
+
+
+state 37
+
+    (4) atribuicao -> INT_A ID EQUAL INT . ;
+
+    ;               shift and go to state 60
+
+
+state 38
+
+    (8) atribuicao -> INT_A ID [ INT . ] ;
+    (9) atribuicao -> INT_A ID [ INT . ] [ INT ] ;
+
+    ]               shift and go to state 61
+
+
+state 39
+
+    (5) atribuicao -> FLOAT_A ID EQUAL FLOAT . ;
+
+    ;               shift and go to state 62
+
+
+state 40
+
+    (10) atribuicao -> STRING_A ID EQUAL STRING . ;
+
+    ;               shift and go to state 63
+
+
+state 41
+
+    (27) fator -> ID [ . INT ]
+    (28) fator -> ID [ . INT ] [ INT ]
+
+    INT             shift and go to state 64
+
+
+state 42
+
+    (13) operacao -> ID EQUAL expressoes ; .
+
+    ID              reduce using rule 13 (operacao -> ID EQUAL expressoes ; .)
+    PRINT           reduce using rule 13 (operacao -> ID EQUAL expressoes ; .)
+    $end            reduce using rule 13 (operacao -> ID EQUAL expressoes ; .)
+
+
+state 43
+
+    (18) expressao -> expressao + . termo
+    (21) termo -> . termo * fator
+    (22) termo -> . termo / fator
+    (23) termo -> . fator
+    (24) fator -> . INT
+    (25) fator -> . ( expressao )
+    (26) fator -> . ID
+    (27) fator -> . ID [ INT ]
+    (28) fator -> . ID [ INT ] [ INT ]
+
+    INT             shift and go to state 33
+    (               shift and go to state 66
+    ID              shift and go to state 23
+
+    termo                          shift and go to state 65
+    fator                          shift and go to state 30
+
+state 44
+
+    (19) expressao -> expressao - . termo
+    (21) termo -> . termo * fator
+    (22) termo -> . termo / fator
+    (23) termo -> . fator
+    (24) fator -> . INT
+    (25) fator -> . ( expressao )
+    (26) fator -> . ID
+    (27) fator -> . ID [ INT ]
+    (28) fator -> . ID [ INT ] [ INT ]
+
+    INT             shift and go to state 33
+    (               shift and go to state 66
+    ID              shift and go to state 23
+
+    termo                          shift and go to state 67
+    fator                          shift and go to state 30
+
+state 45
+
+    (29) expressao_relacional -> expressao > . expressao
+    (18) expressao -> . expressao + termo
+    (19) expressao -> . expressao - termo
+    (20) expressao -> . termo
+    (21) termo -> . termo * fator
+    (22) termo -> . termo / fator
+    (23) termo -> . fator
+    (24) fator -> . INT
+    (25) fator -> . ( expressao )
+    (26) fator -> . ID
+    (27) fator -> . ID [ INT ]
+    (28) fator -> . ID [ INT ] [ INT ]
+
+    INT             shift and go to state 33
+    (               shift and go to state 66
+    ID              shift and go to state 23
+
+    expressao                      shift and go to state 68
+    termo                          shift and go to state 27
+    fator                          shift and go to state 30
+
+state 46
+
+    (30) expressao_relacional -> expressao < . expressao
+    (18) expressao -> . expressao + termo
+    (19) expressao -> . expressao - termo
+    (20) expressao -> . termo
+    (21) termo -> . termo * fator
+    (22) termo -> . termo / fator
+    (23) termo -> . fator
+    (24) fator -> . INT
+    (25) fator -> . ( expressao )
+    (26) fator -> . ID
+    (27) fator -> . ID [ INT ]
+    (28) fator -> . ID [ INT ] [ INT ]
+
+    INT             shift and go to state 33
+    (               shift and go to state 66
+    ID              shift and go to state 23
+
+    expressao                      shift and go to state 69
+    termo                          shift and go to state 27
+    fator                          shift and go to state 30
+
+state 47
+
+    (31) expressao_relacional -> expressao LESS_EQUAL . expressao
+    (18) expressao -> . expressao + termo
+    (19) expressao -> . expressao - termo
+    (20) expressao -> . termo
+    (21) termo -> . termo * fator
+    (22) termo -> . termo / fator
+    (23) termo -> . fator
+    (24) fator -> . INT
+    (25) fator -> . ( expressao )
+    (26) fator -> . ID
+    (27) fator -> . ID [ INT ]
+    (28) fator -> . ID [ INT ] [ INT ]
+
+    INT             shift and go to state 33
+    (               shift and go to state 66
+    ID              shift and go to state 23
+
+    expressao                      shift and go to state 70
+    termo                          shift and go to state 27
+    fator                          shift and go to state 30
+
+state 48
+
+    (32) expressao_relacional -> expressao MORE_EQUAL . expressao
+    (18) expressao -> . expressao + termo
+    (19) expressao -> . expressao - termo
+    (20) expressao -> . termo
+    (21) termo -> . termo * fator
+    (22) termo -> . termo / fator
+    (23) termo -> . fator
+    (24) fator -> . INT
+    (25) fator -> . ( expressao )
+    (26) fator -> . ID
+    (27) fator -> . ID [ INT ]
+    (28) fator -> . ID [ INT ] [ INT ]
+
+    INT             shift and go to state 33
+    (               shift and go to state 66
+    ID              shift and go to state 23
+
+    expressao                      shift and go to state 71
+    termo                          shift and go to state 27
+    fator                          shift and go to state 30
+
+state 49
+
+    (33) expressao_relacional -> expressao EQUAL_EQUAL . expressao
+    (18) expressao -> . expressao + termo
+    (19) expressao -> . expressao - termo
+    (20) expressao -> . termo
+    (21) termo -> . termo * fator
+    (22) termo -> . termo / fator
+    (23) termo -> . fator
+    (24) fator -> . INT
+    (25) fator -> . ( expressao )
+    (26) fator -> . ID
+    (27) fator -> . ID [ INT ]
+    (28) fator -> . ID [ INT ] [ INT ]
+
+    INT             shift and go to state 33
+    (               shift and go to state 66
+    ID              shift and go to state 23
+
+    expressao                      shift and go to state 72
+    termo                          shift and go to state 27
+    fator                          shift and go to state 30
+
+state 50
+
+    (35) expressao_logica -> expressao_logica AND . fator_logico
+    (38) fator_logico -> . ( expressao_logica )
+    (39) fator_logico -> . expressao_relacional
+    (29) expressao_relacional -> . expressao > expressao
+    (30) expressao_relacional -> . expressao < expressao
+    (31) expressao_relacional -> . expressao LESS_EQUAL expressao
+    (32) expressao_relacional -> . expressao MORE_EQUAL expressao
+    (33) expressao_relacional -> . expressao EQUAL_EQUAL expressao
+    (18) expressao -> . expressao + termo
+    (19) expressao -> . expressao - termo
+    (20) expressao -> . termo
+    (21) termo -> . termo * fator
+    (22) termo -> . termo / fator
+    (23) termo -> . fator
+    (24) fator -> . INT
+    (25) fator -> . ( expressao )
+    (26) fator -> . ID
+    (27) fator -> . ID [ INT ]
+    (28) fator -> . ID [ INT ] [ INT ]
+
+    (               shift and go to state 31
+    INT             shift and go to state 33
+    ID              shift and go to state 23
+
+    fator_logico                   shift and go to state 73
+    expressao_relacional           shift and go to state 32
+    expressao                      shift and go to state 55
+    termo                          shift and go to state 27
+    fator                          shift and go to state 30
+
+state 51
+
+    (36) expressao_logica -> expressao_logica OR . fator_logico
+    (38) fator_logico -> . ( expressao_logica )
+    (39) fator_logico -> . expressao_relacional
+    (29) expressao_relacional -> . expressao > expressao
+    (30) expressao_relacional -> . expressao < expressao
+    (31) expressao_relacional -> . expressao LESS_EQUAL expressao
+    (32) expressao_relacional -> . expressao MORE_EQUAL expressao
+    (33) expressao_relacional -> . expressao EQUAL_EQUAL expressao
+    (18) expressao -> . expressao + termo
+    (19) expressao -> . expressao - termo
+    (20) expressao -> . termo
+    (21) termo -> . termo * fator
+    (22) termo -> . termo / fator
+    (23) termo -> . fator
+    (24) fator -> . INT
+    (25) fator -> . ( expressao )
+    (26) fator -> . ID
+    (27) fator -> . ID [ INT ]
+    (28) fator -> . ID [ INT ] [ INT ]
+
+    (               shift and go to state 31
+    INT             shift and go to state 33
+    ID              shift and go to state 23
+
+    fator_logico                   shift and go to state 74
+    expressao_relacional           shift and go to state 32
+    expressao                      shift and go to state 55
+    termo                          shift and go to state 27
+    fator                          shift and go to state 30
+
+state 52
+
+    (21) termo -> termo * . fator
+    (24) fator -> . INT
+    (25) fator -> . ( expressao )
+    (26) fator -> . ID
+    (27) fator -> . ID [ INT ]
+    (28) fator -> . ID [ INT ] [ INT ]
+
+    INT             shift and go to state 33
+    (               shift and go to state 66
+    ID              shift and go to state 23
+
+    fator                          shift and go to state 75
+
+state 53
+
+    (22) termo -> termo / . fator
+    (24) fator -> . INT
+    (25) fator -> . ( expressao )
+    (26) fator -> . ID
+    (27) fator -> . ID [ INT ]
+    (28) fator -> . ID [ INT ] [ INT ]
+
+    INT             shift and go to state 33
+    (               shift and go to state 66
+    ID              shift and go to state 23
+
+    fator                          shift and go to state 76
+
+state 54
+
+    (34) expressao_logica -> ! fator_logico .
+
+    AND             reduce using rule 34 (expressao_logica -> ! fator_logico .)
+    OR              reduce using rule 34 (expressao_logica -> ! fator_logico .)
+    ;               reduce using rule 34 (expressao_logica -> ! fator_logico .)
+    )               reduce using rule 34 (expressao_logica -> ! fator_logico .)
+
+
+state 55
+
+    (29) expressao_relacional -> expressao . > expressao
+    (30) expressao_relacional -> expressao . < expressao
+    (31) expressao_relacional -> expressao . LESS_EQUAL expressao
+    (32) expressao_relacional -> expressao . MORE_EQUAL expressao
+    (33) expressao_relacional -> expressao . EQUAL_EQUAL expressao
+    (18) expressao -> expressao . + termo
+    (19) expressao -> expressao . - termo
+
+    >               shift and go to state 45
+    <               shift and go to state 46
+    LESS_EQUAL      shift and go to state 47
+    MORE_EQUAL      shift and go to state 48
+    EQUAL_EQUAL     shift and go to state 49
+    +               shift and go to state 43
+    -               shift and go to state 44
+
+
+state 56
+
+    (38) fator_logico -> ( expressao_logica . )
+    (35) expressao_logica -> expressao_logica . AND fator_logico
+    (36) expressao_logica -> expressao_logica . OR fator_logico
+
+    )               shift and go to state 77
+    AND             shift and go to state 50
+    OR              shift and go to state 51
+
+
+state 57
+
+    (25) fator -> ( expressao . )
+    (18) expressao -> expressao . + termo
+    (19) expressao -> expressao . - termo
+    (29) expressao_relacional -> expressao . > expressao
+    (30) expressao_relacional -> expressao . < expressao
+    (31) expressao_relacional -> expressao . LESS_EQUAL expressao
+    (32) expressao_relacional -> expressao . MORE_EQUAL expressao
+    (33) expressao_relacional -> expressao . EQUAL_EQUAL expressao
+
+    )               shift and go to state 78
+    +               shift and go to state 43
+    -               shift and go to state 44
+    >               shift and go to state 45
+    <               shift and go to state 46
+    LESS_EQUAL      shift and go to state 47
+    MORE_EQUAL      shift and go to state 48
+    EQUAL_EQUAL     shift and go to state 49
+
+
+state 58
+
+    (14) operacao -> ID [ INT ] . EQUAL expressoes ;
+    (15) operacao -> ID [ INT ] . [ INT ] EQUAL expressoes ;
+
+    EQUAL           shift and go to state 80
+    [               shift and go to state 79
+
+
+state 59
+
+    (41) operacao -> PRINT ID [ INT . ] ;
+    (42) operacao -> PRINT ID [ INT . ] [ INT ] ;
+
+    ]               shift and go to state 81
+
+
+state 60
 
     (4) atribuicao -> INT_A ID EQUAL INT ; .
 
@@ -320,19 +977,20 @@ state 27
     FLOAT_A         reduce using rule 4 (atribuicao -> INT_A ID EQUAL INT ; .)
     STRING_A        reduce using rule 4 (atribuicao -> INT_A ID EQUAL INT ; .)
     ID              reduce using rule 4 (atribuicao -> INT_A ID EQUAL INT ; .)
+    PRINT           reduce using rule 4 (atribuicao -> INT_A ID EQUAL INT ; .)
     $end            reduce using rule 4 (atribuicao -> INT_A ID EQUAL INT ; .)
 
 
-state 28
+state 61
 
     (8) atribuicao -> INT_A ID [ INT ] . ;
     (9) atribuicao -> INT_A ID [ INT ] . [ INT ] ;
 
-    ;               shift and go to state 34
-    [               shift and go to state 33
+    ;               shift and go to state 83
+    [               shift and go to state 82
 
 
-state 29
+state 62
 
     (5) atribuicao -> FLOAT_A ID EQUAL FLOAT ; .
 
@@ -340,10 +998,11 @@ state 29
     FLOAT_A         reduce using rule 5 (atribuicao -> FLOAT_A ID EQUAL FLOAT ; .)
     STRING_A        reduce using rule 5 (atribuicao -> FLOAT_A ID EQUAL FLOAT ; .)
     ID              reduce using rule 5 (atribuicao -> FLOAT_A ID EQUAL FLOAT ; .)
+    PRINT           reduce using rule 5 (atribuicao -> FLOAT_A ID EQUAL FLOAT ; .)
     $end            reduce using rule 5 (atribuicao -> FLOAT_A ID EQUAL FLOAT ; .)
 
 
-state 30
+state 63
 
     (10) atribuicao -> STRING_A ID EQUAL STRING ; .
 
@@ -351,47 +1010,305 @@ state 30
     FLOAT_A         reduce using rule 10 (atribuicao -> STRING_A ID EQUAL STRING ; .)
     STRING_A        reduce using rule 10 (atribuicao -> STRING_A ID EQUAL STRING ; .)
     ID              reduce using rule 10 (atribuicao -> STRING_A ID EQUAL STRING ; .)
+    PRINT           reduce using rule 10 (atribuicao -> STRING_A ID EQUAL STRING ; .)
     $end            reduce using rule 10 (atribuicao -> STRING_A ID EQUAL STRING ; .)
 
 
-state 31
+state 64
 
-    (14) operacao -> ID [ INT ] [ . INT ] EQUAL expressao ;
+    (27) fator -> ID [ INT . ]
+    (28) fator -> ID [ INT . ] [ INT ]
 
-    INT             shift and go to state 35
+    ]               shift and go to state 84
 
 
-state 32
+state 65
 
-    (13) operacao -> ID [ INT ] EQUAL . expressao ;
-    (15) expressao -> . expressao + termo
-    (16) expressao -> . expressao - termo
-    (17) expressao -> . termo
-    (18) termo -> . termo * fator
-    (19) termo -> . termo / fator
-    (20) termo -> . fator
-    (21) fator -> . INT
-    (22) fator -> . ( expressao )
-    (23) fator -> . ID
-    (24) fator -> . ID [ INT ]
-    (25) fator -> . ID [ INT ] [ INT ]
+    (18) expressao -> expressao + termo .
+    (21) termo -> termo . * fator
+    (22) termo -> termo . / fator
 
-    INT             shift and go to state 37
-    (               shift and go to state 41
-    ID              shift and go to state 36
+    +               reduce using rule 18 (expressao -> expressao + termo .)
+    -               reduce using rule 18 (expressao -> expressao + termo .)
+    >               reduce using rule 18 (expressao -> expressao + termo .)
+    <               reduce using rule 18 (expressao -> expressao + termo .)
+    LESS_EQUAL      reduce using rule 18 (expressao -> expressao + termo .)
+    MORE_EQUAL      reduce using rule 18 (expressao -> expressao + termo .)
+    EQUAL_EQUAL     reduce using rule 18 (expressao -> expressao + termo .)
+    ;               reduce using rule 18 (expressao -> expressao + termo .)
+    )               reduce using rule 18 (expressao -> expressao + termo .)
+    AND             reduce using rule 18 (expressao -> expressao + termo .)
+    OR              reduce using rule 18 (expressao -> expressao + termo .)
+    *               shift and go to state 52
+    /               shift and go to state 53
 
-    expressao                      shift and go to state 38
-    termo                          shift and go to state 39
-    fator                          shift and go to state 40
 
-state 33
+state 66
+
+    (25) fator -> ( . expressao )
+    (18) expressao -> . expressao + termo
+    (19) expressao -> . expressao - termo
+    (20) expressao -> . termo
+    (21) termo -> . termo * fator
+    (22) termo -> . termo / fator
+    (23) termo -> . fator
+    (24) fator -> . INT
+    (25) fator -> . ( expressao )
+    (26) fator -> . ID
+    (27) fator -> . ID [ INT ]
+    (28) fator -> . ID [ INT ] [ INT ]
+
+    INT             shift and go to state 33
+    (               shift and go to state 66
+    ID              shift and go to state 23
+
+    expressao                      shift and go to state 85
+    termo                          shift and go to state 27
+    fator                          shift and go to state 30
+
+state 67
+
+    (19) expressao -> expressao - termo .
+    (21) termo -> termo . * fator
+    (22) termo -> termo . / fator
+
+    +               reduce using rule 19 (expressao -> expressao - termo .)
+    -               reduce using rule 19 (expressao -> expressao - termo .)
+    >               reduce using rule 19 (expressao -> expressao - termo .)
+    <               reduce using rule 19 (expressao -> expressao - termo .)
+    LESS_EQUAL      reduce using rule 19 (expressao -> expressao - termo .)
+    MORE_EQUAL      reduce using rule 19 (expressao -> expressao - termo .)
+    EQUAL_EQUAL     reduce using rule 19 (expressao -> expressao - termo .)
+    ;               reduce using rule 19 (expressao -> expressao - termo .)
+    )               reduce using rule 19 (expressao -> expressao - termo .)
+    AND             reduce using rule 19 (expressao -> expressao - termo .)
+    OR              reduce using rule 19 (expressao -> expressao - termo .)
+    *               shift and go to state 52
+    /               shift and go to state 53
+
+
+state 68
+
+    (29) expressao_relacional -> expressao > expressao .
+    (18) expressao -> expressao . + termo
+    (19) expressao -> expressao . - termo
+
+    AND             reduce using rule 29 (expressao_relacional -> expressao > expressao .)
+    OR              reduce using rule 29 (expressao_relacional -> expressao > expressao .)
+    ;               reduce using rule 29 (expressao_relacional -> expressao > expressao .)
+    )               reduce using rule 29 (expressao_relacional -> expressao > expressao .)
+    +               shift and go to state 43
+    -               shift and go to state 44
+
+
+state 69
+
+    (30) expressao_relacional -> expressao < expressao .
+    (18) expressao -> expressao . + termo
+    (19) expressao -> expressao . - termo
+
+    AND             reduce using rule 30 (expressao_relacional -> expressao < expressao .)
+    OR              reduce using rule 30 (expressao_relacional -> expressao < expressao .)
+    ;               reduce using rule 30 (expressao_relacional -> expressao < expressao .)
+    )               reduce using rule 30 (expressao_relacional -> expressao < expressao .)
+    +               shift and go to state 43
+    -               shift and go to state 44
+
+
+state 70
+
+    (31) expressao_relacional -> expressao LESS_EQUAL expressao .
+    (18) expressao -> expressao . + termo
+    (19) expressao -> expressao . - termo
+
+    AND             reduce using rule 31 (expressao_relacional -> expressao LESS_EQUAL expressao .)
+    OR              reduce using rule 31 (expressao_relacional -> expressao LESS_EQUAL expressao .)
+    ;               reduce using rule 31 (expressao_relacional -> expressao LESS_EQUAL expressao .)
+    )               reduce using rule 31 (expressao_relacional -> expressao LESS_EQUAL expressao .)
+    +               shift and go to state 43
+    -               shift and go to state 44
+
+
+state 71
+
+    (32) expressao_relacional -> expressao MORE_EQUAL expressao .
+    (18) expressao -> expressao . + termo
+    (19) expressao -> expressao . - termo
+
+    AND             reduce using rule 32 (expressao_relacional -> expressao MORE_EQUAL expressao .)
+    OR              reduce using rule 32 (expressao_relacional -> expressao MORE_EQUAL expressao .)
+    ;               reduce using rule 32 (expressao_relacional -> expressao MORE_EQUAL expressao .)
+    )               reduce using rule 32 (expressao_relacional -> expressao MORE_EQUAL expressao .)
+    +               shift and go to state 43
+    -               shift and go to state 44
+
+
+state 72
+
+    (33) expressao_relacional -> expressao EQUAL_EQUAL expressao .
+    (18) expressao -> expressao . + termo
+    (19) expressao -> expressao . - termo
+
+    AND             reduce using rule 33 (expressao_relacional -> expressao EQUAL_EQUAL expressao .)
+    OR              reduce using rule 33 (expressao_relacional -> expressao EQUAL_EQUAL expressao .)
+    ;               reduce using rule 33 (expressao_relacional -> expressao EQUAL_EQUAL expressao .)
+    )               reduce using rule 33 (expressao_relacional -> expressao EQUAL_EQUAL expressao .)
+    +               shift and go to state 43
+    -               shift and go to state 44
+
+
+state 73
+
+    (35) expressao_logica -> expressao_logica AND fator_logico .
+
+    AND             reduce using rule 35 (expressao_logica -> expressao_logica AND fator_logico .)
+    OR              reduce using rule 35 (expressao_logica -> expressao_logica AND fator_logico .)
+    ;               reduce using rule 35 (expressao_logica -> expressao_logica AND fator_logico .)
+    )               reduce using rule 35 (expressao_logica -> expressao_logica AND fator_logico .)
+
+
+state 74
+
+    (36) expressao_logica -> expressao_logica OR fator_logico .
+
+    AND             reduce using rule 36 (expressao_logica -> expressao_logica OR fator_logico .)
+    OR              reduce using rule 36 (expressao_logica -> expressao_logica OR fator_logico .)
+    ;               reduce using rule 36 (expressao_logica -> expressao_logica OR fator_logico .)
+    )               reduce using rule 36 (expressao_logica -> expressao_logica OR fator_logico .)
+
+
+state 75
+
+    (21) termo -> termo * fator .
+
+    *               reduce using rule 21 (termo -> termo * fator .)
+    /               reduce using rule 21 (termo -> termo * fator .)
+    +               reduce using rule 21 (termo -> termo * fator .)
+    -               reduce using rule 21 (termo -> termo * fator .)
+    >               reduce using rule 21 (termo -> termo * fator .)
+    <               reduce using rule 21 (termo -> termo * fator .)
+    LESS_EQUAL      reduce using rule 21 (termo -> termo * fator .)
+    MORE_EQUAL      reduce using rule 21 (termo -> termo * fator .)
+    EQUAL_EQUAL     reduce using rule 21 (termo -> termo * fator .)
+    ;               reduce using rule 21 (termo -> termo * fator .)
+    )               reduce using rule 21 (termo -> termo * fator .)
+    AND             reduce using rule 21 (termo -> termo * fator .)
+    OR              reduce using rule 21 (termo -> termo * fator .)
+
+
+state 76
+
+    (22) termo -> termo / fator .
+
+    *               reduce using rule 22 (termo -> termo / fator .)
+    /               reduce using rule 22 (termo -> termo / fator .)
+    +               reduce using rule 22 (termo -> termo / fator .)
+    -               reduce using rule 22 (termo -> termo / fator .)
+    >               reduce using rule 22 (termo -> termo / fator .)
+    <               reduce using rule 22 (termo -> termo / fator .)
+    LESS_EQUAL      reduce using rule 22 (termo -> termo / fator .)
+    MORE_EQUAL      reduce using rule 22 (termo -> termo / fator .)
+    EQUAL_EQUAL     reduce using rule 22 (termo -> termo / fator .)
+    ;               reduce using rule 22 (termo -> termo / fator .)
+    )               reduce using rule 22 (termo -> termo / fator .)
+    AND             reduce using rule 22 (termo -> termo / fator .)
+    OR              reduce using rule 22 (termo -> termo / fator .)
+
+
+state 77
+
+    (38) fator_logico -> ( expressao_logica ) .
+
+    AND             reduce using rule 38 (fator_logico -> ( expressao_logica ) .)
+    OR              reduce using rule 38 (fator_logico -> ( expressao_logica ) .)
+    ;               reduce using rule 38 (fator_logico -> ( expressao_logica ) .)
+    )               reduce using rule 38 (fator_logico -> ( expressao_logica ) .)
+
+
+state 78
+
+    (25) fator -> ( expressao ) .
+
+    *               reduce using rule 25 (fator -> ( expressao ) .)
+    /               reduce using rule 25 (fator -> ( expressao ) .)
+    +               reduce using rule 25 (fator -> ( expressao ) .)
+    -               reduce using rule 25 (fator -> ( expressao ) .)
+    >               reduce using rule 25 (fator -> ( expressao ) .)
+    <               reduce using rule 25 (fator -> ( expressao ) .)
+    LESS_EQUAL      reduce using rule 25 (fator -> ( expressao ) .)
+    MORE_EQUAL      reduce using rule 25 (fator -> ( expressao ) .)
+    EQUAL_EQUAL     reduce using rule 25 (fator -> ( expressao ) .)
+    ;               reduce using rule 25 (fator -> ( expressao ) .)
+    )               reduce using rule 25 (fator -> ( expressao ) .)
+    AND             reduce using rule 25 (fator -> ( expressao ) .)
+    OR              reduce using rule 25 (fator -> ( expressao ) .)
+
+
+state 79
+
+    (15) operacao -> ID [ INT ] [ . INT ] EQUAL expressoes ;
+
+    INT             shift and go to state 86
+
+
+state 80
+
+    (14) operacao -> ID [ INT ] EQUAL . expressoes ;
+    (16) expressoes -> . expressao
+    (17) expressoes -> . expressao_logica
+    (18) expressao -> . expressao + termo
+    (19) expressao -> . expressao - termo
+    (20) expressao -> . termo
+    (34) expressao_logica -> . ! fator_logico
+    (35) expressao_logica -> . expressao_logica AND fator_logico
+    (36) expressao_logica -> . expressao_logica OR fator_logico
+    (37) expressao_logica -> . fator_logico
+    (21) termo -> . termo * fator
+    (22) termo -> . termo / fator
+    (23) termo -> . fator
+    (38) fator_logico -> . ( expressao_logica )
+    (39) fator_logico -> . expressao_relacional
+    (24) fator -> . INT
+    (25) fator -> . ( expressao )
+    (26) fator -> . ID
+    (27) fator -> . ID [ INT ]
+    (28) fator -> . ID [ INT ] [ INT ]
+    (29) expressao_relacional -> . expressao > expressao
+    (30) expressao_relacional -> . expressao < expressao
+    (31) expressao_relacional -> . expressao LESS_EQUAL expressao
+    (32) expressao_relacional -> . expressao MORE_EQUAL expressao
+    (33) expressao_relacional -> . expressao EQUAL_EQUAL expressao
+
+    !               shift and go to state 28
+    (               shift and go to state 31
+    INT             shift and go to state 33
+    ID              shift and go to state 23
+
+    expressoes                     shift and go to state 87
+    expressao                      shift and go to state 25
+    expressao_logica               shift and go to state 26
+    termo                          shift and go to state 27
+    fator_logico                   shift and go to state 29
+    fator                          shift and go to state 30
+    expressao_relacional           shift and go to state 32
+
+state 81
+
+    (41) operacao -> PRINT ID [ INT ] . ;
+    (42) operacao -> PRINT ID [ INT ] . [ INT ] ;
+
+    ;               shift and go to state 89
+    [               shift and go to state 88
+
+
+state 82
 
     (9) atribuicao -> INT_A ID [ INT ] [ . INT ] ;
 
-    INT             shift and go to state 42
+    INT             shift and go to state 90
 
 
-state 34
+state 83
 
     (8) atribuicao -> INT_A ID [ INT ] ; .
 
@@ -399,315 +1316,172 @@ state 34
     FLOAT_A         reduce using rule 8 (atribuicao -> INT_A ID [ INT ] ; .)
     STRING_A        reduce using rule 8 (atribuicao -> INT_A ID [ INT ] ; .)
     ID              reduce using rule 8 (atribuicao -> INT_A ID [ INT ] ; .)
+    PRINT           reduce using rule 8 (atribuicao -> INT_A ID [ INT ] ; .)
     $end            reduce using rule 8 (atribuicao -> INT_A ID [ INT ] ; .)
 
 
-state 35
+state 84
 
-    (14) operacao -> ID [ INT ] [ INT . ] EQUAL expressao ;
+    (27) fator -> ID [ INT ] .
+    (28) fator -> ID [ INT ] . [ INT ]
 
-    ]               shift and go to state 43
-
-
-state 36
-
-    (23) fator -> ID .
-    (24) fator -> ID . [ INT ]
-    (25) fator -> ID . [ INT ] [ INT ]
-
-    *               reduce using rule 23 (fator -> ID .)
-    /               reduce using rule 23 (fator -> ID .)
-    ;               reduce using rule 23 (fator -> ID .)
-    +               reduce using rule 23 (fator -> ID .)
-    -               reduce using rule 23 (fator -> ID .)
-    )               reduce using rule 23 (fator -> ID .)
-    [               shift and go to state 44
-
-
-state 37
-
-    (21) fator -> INT .
-
-    *               reduce using rule 21 (fator -> INT .)
-    /               reduce using rule 21 (fator -> INT .)
-    ;               reduce using rule 21 (fator -> INT .)
-    +               reduce using rule 21 (fator -> INT .)
-    -               reduce using rule 21 (fator -> INT .)
-    )               reduce using rule 21 (fator -> INT .)
+    *               reduce using rule 27 (fator -> ID [ INT ] .)
+    /               reduce using rule 27 (fator -> ID [ INT ] .)
+    +               reduce using rule 27 (fator -> ID [ INT ] .)
+    -               reduce using rule 27 (fator -> ID [ INT ] .)
+    >               reduce using rule 27 (fator -> ID [ INT ] .)
+    <               reduce using rule 27 (fator -> ID [ INT ] .)
+    LESS_EQUAL      reduce using rule 27 (fator -> ID [ INT ] .)
+    MORE_EQUAL      reduce using rule 27 (fator -> ID [ INT ] .)
+    EQUAL_EQUAL     reduce using rule 27 (fator -> ID [ INT ] .)
+    ;               reduce using rule 27 (fator -> ID [ INT ] .)
+    )               reduce using rule 27 (fator -> ID [ INT ] .)
+    AND             reduce using rule 27 (fator -> ID [ INT ] .)
+    OR              reduce using rule 27 (fator -> ID [ INT ] .)
+    [               shift and go to state 91
 
 
-state 38
+state 85
 
-    (13) operacao -> ID [ INT ] EQUAL expressao . ;
-    (15) expressao -> expressao . + termo
-    (16) expressao -> expressao . - termo
+    (25) fator -> ( expressao . )
+    (18) expressao -> expressao . + termo
+    (19) expressao -> expressao . - termo
 
-    ;               shift and go to state 45
-    +               shift and go to state 46
-    -               shift and go to state 47
-
-
-state 39
-
-    (17) expressao -> termo .
-    (18) termo -> termo . * fator
-    (19) termo -> termo . / fator
-
-    ;               reduce using rule 17 (expressao -> termo .)
-    +               reduce using rule 17 (expressao -> termo .)
-    -               reduce using rule 17 (expressao -> termo .)
-    )               reduce using rule 17 (expressao -> termo .)
-    *               shift and go to state 48
-    /               shift and go to state 49
+    )               shift and go to state 78
+    +               shift and go to state 43
+    -               shift and go to state 44
 
 
-state 40
+state 86
 
-    (20) termo -> fator .
+    (15) operacao -> ID [ INT ] [ INT . ] EQUAL expressoes ;
 
-    *               reduce using rule 20 (termo -> fator .)
-    /               reduce using rule 20 (termo -> fator .)
-    ;               reduce using rule 20 (termo -> fator .)
-    +               reduce using rule 20 (termo -> fator .)
-    -               reduce using rule 20 (termo -> fator .)
-    )               reduce using rule 20 (termo -> fator .)
+    ]               shift and go to state 92
 
 
-state 41
+state 87
 
-    (22) fator -> ( . expressao )
-    (15) expressao -> . expressao + termo
-    (16) expressao -> . expressao - termo
-    (17) expressao -> . termo
-    (18) termo -> . termo * fator
-    (19) termo -> . termo / fator
-    (20) termo -> . fator
-    (21) fator -> . INT
-    (22) fator -> . ( expressao )
-    (23) fator -> . ID
-    (24) fator -> . ID [ INT ]
-    (25) fator -> . ID [ INT ] [ INT ]
+    (14) operacao -> ID [ INT ] EQUAL expressoes . ;
 
-    INT             shift and go to state 37
-    (               shift and go to state 41
-    ID              shift and go to state 36
+    ;               shift and go to state 93
 
-    expressao                      shift and go to state 50
-    termo                          shift and go to state 39
-    fator                          shift and go to state 40
 
-state 42
+state 88
+
+    (42) operacao -> PRINT ID [ INT ] [ . INT ] ;
+
+    INT             shift and go to state 94
+
+
+state 89
+
+    (41) operacao -> PRINT ID [ INT ] ; .
+
+    ID              reduce using rule 41 (operacao -> PRINT ID [ INT ] ; .)
+    PRINT           reduce using rule 41 (operacao -> PRINT ID [ INT ] ; .)
+    $end            reduce using rule 41 (operacao -> PRINT ID [ INT ] ; .)
+
+
+state 90
 
     (9) atribuicao -> INT_A ID [ INT ] [ INT . ] ;
 
-    ]               shift and go to state 51
+    ]               shift and go to state 95
 
 
-state 43
+state 91
 
-    (14) operacao -> ID [ INT ] [ INT ] . EQUAL expressao ;
+    (28) fator -> ID [ INT ] [ . INT ]
 
-    EQUAL           shift and go to state 52
-
-
-state 44
-
-    (24) fator -> ID [ . INT ]
-    (25) fator -> ID [ . INT ] [ INT ]
-
-    INT             shift and go to state 53
+    INT             shift and go to state 96
 
 
-state 45
+state 92
 
-    (13) operacao -> ID [ INT ] EQUAL expressao ; .
+    (15) operacao -> ID [ INT ] [ INT ] . EQUAL expressoes ;
 
-    ID              reduce using rule 13 (operacao -> ID [ INT ] EQUAL expressao ; .)
-    $end            reduce using rule 13 (operacao -> ID [ INT ] EQUAL expressao ; .)
-
-
-state 46
-
-    (15) expressao -> expressao + . termo
-    (18) termo -> . termo * fator
-    (19) termo -> . termo / fator
-    (20) termo -> . fator
-    (21) fator -> . INT
-    (22) fator -> . ( expressao )
-    (23) fator -> . ID
-    (24) fator -> . ID [ INT ]
-    (25) fator -> . ID [ INT ] [ INT ]
-
-    INT             shift and go to state 37
-    (               shift and go to state 41
-    ID              shift and go to state 36
-
-    termo                          shift and go to state 54
-    fator                          shift and go to state 40
-
-state 47
-
-    (16) expressao -> expressao - . termo
-    (18) termo -> . termo * fator
-    (19) termo -> . termo / fator
-    (20) termo -> . fator
-    (21) fator -> . INT
-    (22) fator -> . ( expressao )
-    (23) fator -> . ID
-    (24) fator -> . ID [ INT ]
-    (25) fator -> . ID [ INT ] [ INT ]
-
-    INT             shift and go to state 37
-    (               shift and go to state 41
-    ID              shift and go to state 36
-
-    termo                          shift and go to state 55
-    fator                          shift and go to state 40
-
-state 48
-
-    (18) termo -> termo * . fator
-    (21) fator -> . INT
-    (22) fator -> . ( expressao )
-    (23) fator -> . ID
-    (24) fator -> . ID [ INT ]
-    (25) fator -> . ID [ INT ] [ INT ]
-
-    INT             shift and go to state 37
-    (               shift and go to state 41
-    ID              shift and go to state 36
-
-    fator                          shift and go to state 56
-
-state 49
-
-    (19) termo -> termo / . fator
-    (21) fator -> . INT
-    (22) fator -> . ( expressao )
-    (23) fator -> . ID
-    (24) fator -> . ID [ INT ]
-    (25) fator -> . ID [ INT ] [ INT ]
-
-    INT             shift and go to state 37
-    (               shift and go to state 41
-    ID              shift and go to state 36
-
-    fator                          shift and go to state 57
-
-state 50
-
-    (22) fator -> ( expressao . )
-    (15) expressao -> expressao . + termo
-    (16) expressao -> expressao . - termo
-
-    )               shift and go to state 58
-    +               shift and go to state 46
-    -               shift and go to state 47
+    EQUAL           shift and go to state 97
 
 
-state 51
+state 93
+
+    (14) operacao -> ID [ INT ] EQUAL expressoes ; .
+
+    ID              reduce using rule 14 (operacao -> ID [ INT ] EQUAL expressoes ; .)
+    PRINT           reduce using rule 14 (operacao -> ID [ INT ] EQUAL expressoes ; .)
+    $end            reduce using rule 14 (operacao -> ID [ INT ] EQUAL expressoes ; .)
+
+
+state 94
+
+    (42) operacao -> PRINT ID [ INT ] [ INT . ] ;
+
+    ]               shift and go to state 98
+
+
+state 95
 
     (9) atribuicao -> INT_A ID [ INT ] [ INT ] . ;
 
-    ;               shift and go to state 59
+    ;               shift and go to state 99
 
 
-state 52
+state 96
 
-    (14) operacao -> ID [ INT ] [ INT ] EQUAL . expressao ;
-    (15) expressao -> . expressao + termo
-    (16) expressao -> . expressao - termo
-    (17) expressao -> . termo
-    (18) termo -> . termo * fator
-    (19) termo -> . termo / fator
-    (20) termo -> . fator
-    (21) fator -> . INT
-    (22) fator -> . ( expressao )
-    (23) fator -> . ID
-    (24) fator -> . ID [ INT ]
-    (25) fator -> . ID [ INT ] [ INT ]
+    (28) fator -> ID [ INT ] [ INT . ]
 
-    INT             shift and go to state 37
-    (               shift and go to state 41
-    ID              shift and go to state 36
-
-    expressao                      shift and go to state 60
-    termo                          shift and go to state 39
-    fator                          shift and go to state 40
-
-state 53
-
-    (24) fator -> ID [ INT . ]
-    (25) fator -> ID [ INT . ] [ INT ]
-
-    ]               shift and go to state 61
+    ]               shift and go to state 100
 
 
-state 54
+state 97
 
-    (15) expressao -> expressao + termo .
-    (18) termo -> termo . * fator
-    (19) termo -> termo . / fator
+    (15) operacao -> ID [ INT ] [ INT ] EQUAL . expressoes ;
+    (16) expressoes -> . expressao
+    (17) expressoes -> . expressao_logica
+    (18) expressao -> . expressao + termo
+    (19) expressao -> . expressao - termo
+    (20) expressao -> . termo
+    (34) expressao_logica -> . ! fator_logico
+    (35) expressao_logica -> . expressao_logica AND fator_logico
+    (36) expressao_logica -> . expressao_logica OR fator_logico
+    (37) expressao_logica -> . fator_logico
+    (21) termo -> . termo * fator
+    (22) termo -> . termo / fator
+    (23) termo -> . fator
+    (38) fator_logico -> . ( expressao_logica )
+    (39) fator_logico -> . expressao_relacional
+    (24) fator -> . INT
+    (25) fator -> . ( expressao )
+    (26) fator -> . ID
+    (27) fator -> . ID [ INT ]
+    (28) fator -> . ID [ INT ] [ INT ]
+    (29) expressao_relacional -> . expressao > expressao
+    (30) expressao_relacional -> . expressao < expressao
+    (31) expressao_relacional -> . expressao LESS_EQUAL expressao
+    (32) expressao_relacional -> . expressao MORE_EQUAL expressao
+    (33) expressao_relacional -> . expressao EQUAL_EQUAL expressao
 
-    ;               reduce using rule 15 (expressao -> expressao + termo .)
-    +               reduce using rule 15 (expressao -> expressao + termo .)
-    -               reduce using rule 15 (expressao -> expressao + termo .)
-    )               reduce using rule 15 (expressao -> expressao + termo .)
-    *               shift and go to state 48
-    /               shift and go to state 49
+    !               shift and go to state 28
+    (               shift and go to state 31
+    INT             shift and go to state 33
+    ID              shift and go to state 23
 
+    expressoes                     shift and go to state 101
+    expressao                      shift and go to state 25
+    expressao_logica               shift and go to state 26
+    termo                          shift and go to state 27
+    fator_logico                   shift and go to state 29
+    fator                          shift and go to state 30
+    expressao_relacional           shift and go to state 32
 
-state 55
+state 98
 
-    (16) expressao -> expressao - termo .
-    (18) termo -> termo . * fator
-    (19) termo -> termo . / fator
+    (42) operacao -> PRINT ID [ INT ] [ INT ] . ;
 
-    ;               reduce using rule 16 (expressao -> expressao - termo .)
-    +               reduce using rule 16 (expressao -> expressao - termo .)
-    -               reduce using rule 16 (expressao -> expressao - termo .)
-    )               reduce using rule 16 (expressao -> expressao - termo .)
-    *               shift and go to state 48
-    /               shift and go to state 49
-
-
-state 56
-
-    (18) termo -> termo * fator .
-
-    *               reduce using rule 18 (termo -> termo * fator .)
-    /               reduce using rule 18 (termo -> termo * fator .)
-    ;               reduce using rule 18 (termo -> termo * fator .)
-    +               reduce using rule 18 (termo -> termo * fator .)
-    -               reduce using rule 18 (termo -> termo * fator .)
-    )               reduce using rule 18 (termo -> termo * fator .)
-
-
-state 57
-
-    (19) termo -> termo / fator .
-
-    *               reduce using rule 19 (termo -> termo / fator .)
-    /               reduce using rule 19 (termo -> termo / fator .)
-    ;               reduce using rule 19 (termo -> termo / fator .)
-    +               reduce using rule 19 (termo -> termo / fator .)
-    -               reduce using rule 19 (termo -> termo / fator .)
-    )               reduce using rule 19 (termo -> termo / fator .)
+    ;               shift and go to state 102
 
 
-state 58
-
-    (22) fator -> ( expressao ) .
-
-    *               reduce using rule 22 (fator -> ( expressao ) .)
-    /               reduce using rule 22 (fator -> ( expressao ) .)
-    ;               reduce using rule 22 (fator -> ( expressao ) .)
-    +               reduce using rule 22 (fator -> ( expressao ) .)
-    -               reduce using rule 22 (fator -> ( expressao ) .)
-    )               reduce using rule 22 (fator -> ( expressao ) .)
-
-
-state 59
+state 99
 
     (9) atribuicao -> INT_A ID [ INT ] [ INT ] ; .
 
@@ -715,64 +1489,50 @@ state 59
     FLOAT_A         reduce using rule 9 (atribuicao -> INT_A ID [ INT ] [ INT ] ; .)
     STRING_A        reduce using rule 9 (atribuicao -> INT_A ID [ INT ] [ INT ] ; .)
     ID              reduce using rule 9 (atribuicao -> INT_A ID [ INT ] [ INT ] ; .)
+    PRINT           reduce using rule 9 (atribuicao -> INT_A ID [ INT ] [ INT ] ; .)
     $end            reduce using rule 9 (atribuicao -> INT_A ID [ INT ] [ INT ] ; .)
 
 
-state 60
+state 100
 
-    (14) operacao -> ID [ INT ] [ INT ] EQUAL expressao . ;
-    (15) expressao -> expressao . + termo
-    (16) expressao -> expressao . - termo
+    (28) fator -> ID [ INT ] [ INT ] .
 
-    ;               shift and go to state 62
-    +               shift and go to state 46
-    -               shift and go to state 47
-
-
-state 61
-
-    (24) fator -> ID [ INT ] .
-    (25) fator -> ID [ INT ] . [ INT ]
-
-    *               reduce using rule 24 (fator -> ID [ INT ] .)
-    /               reduce using rule 24 (fator -> ID [ INT ] .)
-    ;               reduce using rule 24 (fator -> ID [ INT ] .)
-    +               reduce using rule 24 (fator -> ID [ INT ] .)
-    -               reduce using rule 24 (fator -> ID [ INT ] .)
-    )               reduce using rule 24 (fator -> ID [ INT ] .)
-    [               shift and go to state 63
+    *               reduce using rule 28 (fator -> ID [ INT ] [ INT ] .)
+    /               reduce using rule 28 (fator -> ID [ INT ] [ INT ] .)
+    +               reduce using rule 28 (fator -> ID [ INT ] [ INT ] .)
+    -               reduce using rule 28 (fator -> ID [ INT ] [ INT ] .)
+    >               reduce using rule 28 (fator -> ID [ INT ] [ INT ] .)
+    <               reduce using rule 28 (fator -> ID [ INT ] [ INT ] .)
+    LESS_EQUAL      reduce using rule 28 (fator -> ID [ INT ] [ INT ] .)
+    MORE_EQUAL      reduce using rule 28 (fator -> ID [ INT ] [ INT ] .)
+    EQUAL_EQUAL     reduce using rule 28 (fator -> ID [ INT ] [ INT ] .)
+    ;               reduce using rule 28 (fator -> ID [ INT ] [ INT ] .)
+    )               reduce using rule 28 (fator -> ID [ INT ] [ INT ] .)
+    AND             reduce using rule 28 (fator -> ID [ INT ] [ INT ] .)
+    OR              reduce using rule 28 (fator -> ID [ INT ] [ INT ] .)
 
 
-state 62
+state 101
 
-    (14) operacao -> ID [ INT ] [ INT ] EQUAL expressao ; .
+    (15) operacao -> ID [ INT ] [ INT ] EQUAL expressoes . ;
 
-    ID              reduce using rule 14 (operacao -> ID [ INT ] [ INT ] EQUAL expressao ; .)
-    $end            reduce using rule 14 (operacao -> ID [ INT ] [ INT ] EQUAL expressao ; .)
-
-
-state 63
-
-    (25) fator -> ID [ INT ] [ . INT ]
-
-    INT             shift and go to state 64
+    ;               shift and go to state 103
 
 
-state 64
+state 102
 
-    (25) fator -> ID [ INT ] [ INT . ]
+    (42) operacao -> PRINT ID [ INT ] [ INT ] ; .
 
-    ]               shift and go to state 65
+    ID              reduce using rule 42 (operacao -> PRINT ID [ INT ] [ INT ] ; .)
+    PRINT           reduce using rule 42 (operacao -> PRINT ID [ INT ] [ INT ] ; .)
+    $end            reduce using rule 42 (operacao -> PRINT ID [ INT ] [ INT ] ; .)
 
 
-state 65
+state 103
 
-    (25) fator -> ID [ INT ] [ INT ] .
+    (15) operacao -> ID [ INT ] [ INT ] EQUAL expressoes ; .
 
-    *               reduce using rule 25 (fator -> ID [ INT ] [ INT ] .)
-    /               reduce using rule 25 (fator -> ID [ INT ] [ INT ] .)
-    ;               reduce using rule 25 (fator -> ID [ INT ] [ INT ] .)
-    +               reduce using rule 25 (fator -> ID [ INT ] [ INT ] .)
-    -               reduce using rule 25 (fator -> ID [ INT ] [ INT ] .)
-    )               reduce using rule 25 (fator -> ID [ INT ] [ INT ] .)
+    ID              reduce using rule 15 (operacao -> ID [ INT ] [ INT ] EQUAL expressoes ; .)
+    PRINT           reduce using rule 15 (operacao -> ID [ INT ] [ INT ] EQUAL expressoes ; .)
+    $end            reduce using rule 15 (operacao -> ID [ INT ] [ INT ] EQUAL expressoes ; .)
 

@@ -1,9 +1,16 @@
 import ply.lex as lex
 import sys
 
-tokens = ['ID','INT','FLOAT','INT_A','FLOAT_A','STRING_A','EQUAL','STRING']
-literals = ['+','-','*','/','(',')',';','{','}','[',']']
+tokens = ['ID','INT','FLOAT','INT_A','FLOAT_A','STRING_A','EQUAL','STRING',
+            'AND','OR','LESS_EQUAL','MORE_EQUAL','EQUAL_EQUAL','PRINT']
+literals = ['+','-','*','/','(',')',';','{','}','[',']','>','<','!']
 
+t_AND = r'&&'
+t_OR = r'\|\|'
+t_LESS_EQUAL = r'\<\='
+t_MORE_EQUAL = r'\>\='
+t_EQUAL_EQUAL = r'\=\='
+t_PRINT = r'print\ +'
 t_INT_A = r'int\ +'
 t_FLOAT_A = r'float\ +'
 t_STRING_A = r'string\ +'

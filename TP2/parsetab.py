@@ -6,9 +6,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = "EQUAL FLOAT FLOAT_A ID INT INT_A STRING STRING_Abody : '(' atribuicoes operacoesatribuicoes : atribuicoes atribuicaoatribuicoes : atribuicao : INT_A ID EQUAL INT ';'atribuicao : FLOAT_A ID EQUAL FLOAT ';'atribuicao : INT_A ID ';'atribuicao : FLOAT_A ID ';'atribuicao : INT_A ID '[' INT ']' ';'atribuicao : INT_A ID '[' INT ']' '[' INT ']' ';'atribuicao : STRING_A ID EQUAL STRING ';'operacoes : operacoes operacao operacoes : operacao : ID '[' INT ']' EQUAL expressao ';' operacao : ID '[' INT ']' '[' INT ']' EQUAL expressao ';' expressao : expressao '+' termoexpressao : expressao '-' termoexpressao : termotermo : termo '*' fatortermo : termo '/' fatortermo : fatorfator : INT fator : '(' expressao ')' fator : IDfator : ID '[' INT ']' fator : ID '[' INT ']' '[' INT ']' "
+_lr_signature = "AND EQUAL EQUAL_EQUAL FLOAT FLOAT_A ID INT INT_A LESS_EQUAL MORE_EQUAL OR PRINT STRING STRING_Abody : atribuicoes operacoesatribuicoes : atribuicoes atribuicaoatribuicoes : atribuicao : INT_A ID EQUAL INT ';'atribuicao : FLOAT_A ID EQUAL FLOAT ';'atribuicao : INT_A ID ';'atribuicao : FLOAT_A ID ';'atribuicao : INT_A ID '[' INT ']' ';'atribuicao : INT_A ID '[' INT ']' '[' INT ']' ';'atribuicao : STRING_A ID EQUAL STRING ';'operacoes : operacoes operacaooperacoes : operacao : ID EQUAL expressoes ';'operacao : ID '[' INT ']' EQUAL expressoes ';' operacao : ID '[' INT ']' '[' INT ']' EQUAL expressoes ';' expressoes : expressaoexpressoes : expressao_logicaexpressao : expressao '+' termoexpressao : expressao '-' termoexpressao : termotermo : termo '*' fatortermo : termo '/' fatortermo : fatorfator : INT fator : '(' expressao ')' fator : IDfator : ID '[' INT ']' fator : ID '[' INT ']' '[' INT ']' expressao_relacional : expressao '>' expressaoexpressao_relacional : expressao '<' expressaoexpressao_relacional : expressao LESS_EQUAL expressaoexpressao_relacional : expressao MORE_EQUAL expressaoexpressao_relacional : expressao EQUAL_EQUAL expressaoexpressao_logica : '!' fator_logicoexpressao_logica : expressao_logica AND fator_logicoexpressao_logica : expressao_logica OR fator_logicoexpressao_logica : fator_logicofator_logico : '(' expressao_logica ')' fator_logico : expressao_relacional operacao : PRINT ID ';' operacao : PRINT ID '[' INT ']' ';' operacao : PRINT ID '[' INT ']' '[' INT ']' ';' "
     
-_lr_action_items = {'(':([0,32,41,46,47,48,49,52,],[2,41,41,41,41,41,41,41,]),'$end':([1,2,3,4,5,9,16,19,27,29,30,34,45,59,62,],[0,-3,-12,-1,-2,-11,-6,-7,-4,-5,-10,-8,-13,-9,-14,]),'INT_A':([2,3,5,16,19,27,29,30,34,59,],[-3,6,-2,-6,-7,-4,-5,-10,-8,-9,]),'FLOAT_A':([2,3,5,16,19,27,29,30,34,59,],[-3,7,-2,-6,-7,-4,-5,-10,-8,-9,]),'STRING_A':([2,3,5,16,19,27,29,30,34,59,],[-3,8,-2,-6,-7,-4,-5,-10,-8,-9,]),'ID':([2,3,4,5,6,7,8,9,16,19,27,29,30,32,34,41,45,46,47,48,49,52,59,62,],[-3,-12,10,-2,11,12,13,-11,-6,-7,-4,-5,-10,36,-8,36,-13,36,36,36,36,36,-9,-14,]),'[':([10,11,26,28,36,61,],[14,17,31,33,44,63,]),'EQUAL':([11,12,13,26,43,],[15,18,20,32,52,]),';':([11,12,22,24,25,28,36,37,38,39,40,51,54,55,56,57,58,60,61,65,],[16,19,27,29,30,34,-23,-21,45,-17,-20,59,-15,-16,-18,-19,-22,62,-24,-25,]),'INT':([14,15,17,31,32,33,41,44,46,47,48,49,52,63,],[21,22,23,35,37,42,37,53,37,37,37,37,37,64,]),'FLOAT':([18,],[24,]),'STRING':([20,],[25,]),']':([21,23,35,42,53,64,],[26,28,43,51,61,65,]),'*':([36,37,39,40,54,55,56,57,58,61,65,],[-23,-21,48,-20,48,48,-18,-19,-22,-24,-25,]),'/':([36,37,39,40,54,55,56,57,58,61,65,],[-23,-21,49,-20,49,49,-18,-19,-22,-24,-25,]),'+':([36,37,38,39,40,50,54,55,56,57,58,60,61,65,],[-23,-21,46,-17,-20,46,-15,-16,-18,-19,-22,46,-24,-25,]),'-':([36,37,38,39,40,50,54,55,56,57,58,60,61,65,],[-23,-21,47,-17,-20,47,-15,-16,-18,-19,-22,47,-24,-25,]),')':([36,37,39,40,50,54,55,56,57,58,61,65,],[-23,-21,-17,-20,58,-15,-16,-18,-19,-22,-24,-25,]),}
+_lr_action_items = {'INT_A':([0,2,4,18,21,60,62,63,83,99,],[-3,5,-2,-6,-7,-4,-5,-10,-8,-9,]),'FLOAT_A':([0,2,4,18,21,60,62,63,83,99,],[-3,6,-2,-6,-7,-4,-5,-10,-8,-9,]),'STRING_A':([0,2,4,18,21,60,62,63,83,99,],[-3,7,-2,-6,-7,-4,-5,-10,-8,-9,]),'ID':([0,2,3,4,5,6,7,8,10,14,18,21,28,31,35,42,43,44,45,46,47,48,49,50,51,52,53,60,62,63,66,80,83,89,93,97,99,102,103,],[-3,-12,9,-2,11,12,13,-11,16,23,-6,-7,23,23,-40,-13,23,23,23,23,23,23,23,23,23,23,23,-4,-5,-10,23,23,-8,-41,-14,23,-9,-42,-15,]),'PRINT':([0,2,3,4,8,18,21,35,42,60,62,63,83,89,93,99,102,103,],[-3,-12,10,-2,-11,-6,-7,-40,-13,-4,-5,-10,-8,-41,-14,-9,-42,-15,]),'$end':([0,1,2,3,4,8,18,21,35,42,60,62,63,83,89,93,99,102,103,],[-3,0,-12,-1,-2,-11,-6,-7,-40,-13,-4,-5,-10,-8,-41,-14,-9,-42,-15,]),'EQUAL':([9,11,12,13,58,92,],[14,17,20,22,80,97,]),'[':([9,11,16,23,58,61,81,84,],[15,19,36,41,79,82,88,91,]),';':([11,12,16,23,24,25,26,27,29,30,32,33,37,39,40,54,61,65,67,68,69,70,71,72,73,74,75,76,77,78,81,84,87,95,98,100,101,],[18,21,35,-26,42,-16,-17,-20,-37,-23,-39,-24,60,62,63,-34,83,-18,-19,-29,-30,-31,-32,-33,-35,-36,-21,-22,-38,-25,89,-27,93,99,102,-28,103,]),'!':([14,31,80,97,],[28,28,28,28,]),'(':([14,28,31,43,44,45,46,47,48,49,50,51,52,53,66,80,97,],[31,31,31,66,66,66,66,66,66,66,31,31,66,66,66,31,31,]),'INT':([14,15,17,19,28,31,36,41,43,44,45,46,47,48,49,50,51,52,53,66,79,80,82,88,91,97,],[33,34,37,38,33,33,59,64,33,33,33,33,33,33,33,33,33,33,33,33,86,33,90,94,96,33,]),'FLOAT':([20,],[39,]),'STRING':([22,],[40,]),'*':([23,27,30,33,65,67,75,76,78,84,100,],[-26,52,-23,-24,52,52,-21,-22,-25,-27,-28,]),'/':([23,27,30,33,65,67,75,76,78,84,100,],[-26,53,-23,-24,53,53,-21,-22,-25,-27,-28,]),'+':([23,25,27,30,33,55,57,65,67,68,69,70,71,72,75,76,78,84,85,100,],[-26,43,-20,-23,-24,43,43,-18,-19,43,43,43,43,43,-21,-22,-25,-27,43,-28,]),'-':([23,25,27,30,33,55,57,65,67,68,69,70,71,72,75,76,78,84,85,100,],[-26,44,-20,-23,-24,44,44,-18,-19,44,44,44,44,44,-21,-22,-25,-27,44,-28,]),'>':([23,25,27,30,33,55,57,65,67,75,76,78,84,100,],[-26,45,-20,-23,-24,45,45,-18,-19,-21,-22,-25,-27,-28,]),'<':([23,25,27,30,33,55,57,65,67,75,76,78,84,100,],[-26,46,-20,-23,-24,46,46,-18,-19,-21,-22,-25,-27,-28,]),'LESS_EQUAL':([23,25,27,30,33,55,57,65,67,75,76,78,84,100,],[-26,47,-20,-23,-24,47,47,-18,-19,-21,-22,-25,-27,-28,]),'MORE_EQUAL':([23,25,27,30,33,55,57,65,67,75,76,78,84,100,],[-26,48,-20,-23,-24,48,48,-18,-19,-21,-22,-25,-27,-28,]),'EQUAL_EQUAL':([23,25,27,30,33,55,57,65,67,75,76,78,84,100,],[-26,49,-20,-23,-24,49,49,-18,-19,-21,-22,-25,-27,-28,]),')':([23,27,29,30,32,33,54,56,57,65,67,68,69,70,71,72,73,74,75,76,77,78,84,85,100,],[-26,-20,-37,-23,-39,-24,-34,77,78,-18,-19,-29,-30,-31,-32,-33,-35,-36,-21,-22,-38,-25,-27,78,-28,]),'AND':([23,26,27,29,30,32,33,54,56,65,67,68,69,70,71,72,73,74,75,76,77,78,84,100,],[-26,50,-20,-37,-23,-39,-24,-34,50,-18,-19,-29,-30,-31,-32,-33,-35,-36,-21,-22,-38,-25,-27,-28,]),'OR':([23,26,27,29,30,32,33,54,56,65,67,68,69,70,71,72,73,74,75,76,77,78,84,100,],[-26,51,-20,-37,-23,-39,-24,-34,51,-18,-19,-29,-30,-31,-32,-33,-35,-36,-21,-22,-38,-25,-27,-28,]),']':([34,38,59,64,86,90,94,96,],[58,61,81,84,92,95,98,100,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -17,7 +17,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'body':([0,],[1,]),'atribuicoes':([2,],[3,]),'operacoes':([3,],[4,]),'atribuicao':([3,],[5,]),'operacao':([4,],[9,]),'expressao':([32,41,52,],[38,50,60,]),'termo':([32,41,46,47,52,],[39,39,54,55,39,]),'fator':([32,41,46,47,48,49,52,],[40,40,40,40,56,57,40,]),}
+_lr_goto_items = {'body':([0,],[1,]),'atribuicoes':([0,],[2,]),'operacoes':([2,],[3,]),'atribuicao':([2,],[4,]),'operacao':([3,],[8,]),'expressoes':([14,80,97,],[24,87,101,]),'expressao':([14,28,31,45,46,47,48,49,50,51,66,80,97,],[25,55,57,68,69,70,71,72,55,55,85,25,25,]),'expressao_logica':([14,31,80,97,],[26,56,26,26,]),'termo':([14,28,31,43,44,45,46,47,48,49,50,51,66,80,97,],[27,27,27,65,67,27,27,27,27,27,27,27,27,27,27,]),'fator_logico':([14,28,31,50,51,80,97,],[29,54,29,73,74,29,29,]),'fator':([14,28,31,43,44,45,46,47,48,49,50,51,52,53,66,80,97,],[30,30,30,30,30,30,30,30,30,30,30,30,75,76,30,30,30,]),'expressao_relacional':([14,28,31,50,51,80,97,],[32,32,32,32,32,32,32,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -27,7 +27,7 @@ for _k, _v in _lr_goto_items.items():
 del _lr_goto_items
 _lr_productions = [
   ("S' -> body","S'",1,None,None,None),
-  ('body -> ( atribuicoes operacoes','body',3,'p_body','compilador_yacc.py',9),
+  ('body -> atribuicoes operacoes','body',2,'p_body','compilador_yacc.py',9),
   ('atribuicoes -> atribuicoes atribuicao','atribuicoes',2,'p_atribuicoes_atribuicao','compilador_yacc.py',13),
   ('atribuicoes -> <empty>','atribuicoes',0,'p_atribuicoes_vazio','compilador_yacc.py',17),
   ('atribuicao -> INT_A ID EQUAL INT ;','atribuicao',5,'p_atribuicao_int','compilador_yacc.py',21),
@@ -39,17 +39,34 @@ _lr_productions = [
   ('atribuicao -> STRING_A ID EQUAL STRING ;','atribuicao',5,'p_atribuicao_string','compilador_yacc.py',58),
   ('operacoes -> operacoes operacao','operacoes',2,'p_operacoes_operacao','compilador_yacc.py',65),
   ('operacoes -> <empty>','operacoes',0,'p_operacoes_fim','compilador_yacc.py',69),
-  ('operacao -> ID [ INT ] EQUAL expressao ;','operacao',7,'p_operacao_array_valor','compilador_yacc.py',74),
-  ('operacao -> ID [ INT ] [ INT ] EQUAL expressao ;','operacao',10,'p_operacao_array2d_valor','compilador_yacc.py',85),
-  ('expressao -> expressao + termo','expressao',3,'p_expressao_mais','compilador_yacc.py',95),
-  ('expressao -> expressao - termo','expressao',3,'p_expressao_menos','compilador_yacc.py',99),
-  ('expressao -> termo','expressao',1,'p_expressao_termo','compilador_yacc.py',103),
-  ('termo -> termo * fator','termo',3,'p_termo_mult','compilador_yacc.py',107),
-  ('termo -> termo / fator','termo',3,'p_termo_div','compilador_yacc.py',111),
-  ('termo -> fator','termo',1,'p_termo_fator','compilador_yacc.py',115),
-  ('fator -> INT','fator',1,'p_fator_NUM','compilador_yacc.py',120),
-  ('fator -> ( expressao )','fator',3,'p_fator_expressao','compilador_yacc.py',124),
-  ('fator -> ID','fator',1,'p_fator_int','compilador_yacc.py',128),
-  ('fator -> ID [ INT ]','fator',4,'p_fator_array','compilador_yacc.py',136),
-  ('fator -> ID [ INT ] [ INT ]','fator',7,'p_fator_array2d','compilador_yacc.py',145),
+  ('operacao -> ID EQUAL expressoes ;','operacao',4,'p_operacao_variavel','compilador_yacc.py',73),
+  ('operacao -> ID [ INT ] EQUAL expressoes ;','operacao',7,'p_operacao_array_valor','compilador_yacc.py',84),
+  ('operacao -> ID [ INT ] [ INT ] EQUAL expressoes ;','operacao',10,'p_operacao_array2d_valor','compilador_yacc.py',95),
+  ('expressoes -> expressao','expressoes',1,'p_expressoes_expressao','compilador_yacc.py',106),
+  ('expressoes -> expressao_logica','expressoes',1,'p_expressoes_expressao_logica','compilador_yacc.py',110),
+  ('expressao -> expressao + termo','expressao',3,'p_expressao_mais','compilador_yacc.py',114),
+  ('expressao -> expressao - termo','expressao',3,'p_expressao_menos','compilador_yacc.py',118),
+  ('expressao -> termo','expressao',1,'p_expressao_termo','compilador_yacc.py',122),
+  ('termo -> termo * fator','termo',3,'p_termo_mult','compilador_yacc.py',126),
+  ('termo -> termo / fator','termo',3,'p_termo_div','compilador_yacc.py',130),
+  ('termo -> fator','termo',1,'p_termo_fator','compilador_yacc.py',134),
+  ('fator -> INT','fator',1,'p_fator_NUM','compilador_yacc.py',139),
+  ('fator -> ( expressao )','fator',3,'p_fator_expressao','compilador_yacc.py',143),
+  ('fator -> ID','fator',1,'p_fator_int','compilador_yacc.py',147),
+  ('fator -> ID [ INT ]','fator',4,'p_fator_array','compilador_yacc.py',155),
+  ('fator -> ID [ INT ] [ INT ]','fator',7,'p_fator_array2d','compilador_yacc.py',164),
+  ('expressao_relacional -> expressao > expressao','expressao_relacional',3,'p_expressao_relacional_expressao_sup','compilador_yacc.py',173),
+  ('expressao_relacional -> expressao < expressao','expressao_relacional',3,'p_expressao_relacional_expressao_inf','compilador_yacc.py',180),
+  ('expressao_relacional -> expressao LESS_EQUAL expressao','expressao_relacional',3,'p_expressao_relacional_expressao_inf_eq','compilador_yacc.py',187),
+  ('expressao_relacional -> expressao MORE_EQUAL expressao','expressao_relacional',3,'p_expressao_relacional_expressao_sup_eq','compilador_yacc.py',194),
+  ('expressao_relacional -> expressao EQUAL_EQUAL expressao','expressao_relacional',3,'p_expressao_relacional_expressao_eq','compilador_yacc.py',201),
+  ('expressao_logica -> ! fator_logico','expressao_logica',2,'p_expressao_logica_not','compilador_yacc.py',208),
+  ('expressao_logica -> expressao_logica AND fator_logico','expressao_logica',3,'p_expressao_logica_and','compilador_yacc.py',214),
+  ('expressao_logica -> expressao_logica OR fator_logico','expressao_logica',3,'p_expressao_logica_or','compilador_yacc.py',221),
+  ('expressao_logica -> fator_logico','expressao_logica',1,'p_expressao_logica_relacional','compilador_yacc.py',230),
+  ('fator_logico -> ( expressao_logica )','fator_logico',3,'p_fator_logico_expressao_logica','compilador_yacc.py',235),
+  ('fator_logico -> expressao_relacional','fator_logico',1,'p_fator_logico_expressao_relacional','compilador_yacc.py',239),
+  ('operacao -> PRINT ID ;','operacao',3,'p_imprime_var','compilador_yacc.py',244),
+  ('operacao -> PRINT ID [ INT ] ;','operacao',6,'p_imprime_array','compilador_yacc.py',259),
+  ('operacao -> PRINT ID [ INT ] [ INT ] ;','operacao',9,'p_imprime_array2d','compilador_yacc.py',268),
 ]
