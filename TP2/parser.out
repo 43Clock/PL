@@ -1,0 +1,778 @@
+Created by PLY version 3.11 (http://www.dabeaz.com/ply)
+
+Grammar
+
+Rule 0     S' -> body
+Rule 1     body -> ( atribuicoes operacoes
+Rule 2     atribuicoes -> atribuicoes atribuicao
+Rule 3     atribuicoes -> <empty>
+Rule 4     atribuicao -> INT_A ID EQUAL INT ;
+Rule 5     atribuicao -> FLOAT_A ID EQUAL FLOAT ;
+Rule 6     atribuicao -> INT_A ID ;
+Rule 7     atribuicao -> FLOAT_A ID ;
+Rule 8     atribuicao -> INT_A ID [ INT ] ;
+Rule 9     atribuicao -> INT_A ID [ INT ] [ INT ] ;
+Rule 10    atribuicao -> STRING_A ID EQUAL STRING ;
+Rule 11    operacoes -> operacoes operacao
+Rule 12    operacoes -> <empty>
+Rule 13    operacao -> ID [ INT ] EQUAL expressao ;
+Rule 14    operacao -> ID [ INT ] [ INT ] EQUAL expressao ;
+Rule 15    expressao -> expressao + termo
+Rule 16    expressao -> expressao - termo
+Rule 17    expressao -> termo
+Rule 18    termo -> termo * fator
+Rule 19    termo -> termo / fator
+Rule 20    termo -> fator
+Rule 21    fator -> INT
+Rule 22    fator -> ( expressao )
+Rule 23    fator -> ID
+Rule 24    fator -> ID [ INT ]
+Rule 25    fator -> ID [ INT ] [ INT ]
+
+Terminals, with rules where they appear
+
+(                    : 1 22
+)                    : 22
+*                    : 18
++                    : 15
+-                    : 16
+/                    : 19
+;                    : 4 5 6 7 8 9 10 13 14
+EQUAL                : 4 5 10 13 14
+FLOAT                : 5
+FLOAT_A              : 5 7
+ID                   : 4 5 6 7 8 9 10 13 14 23 24 25
+INT                  : 4 8 9 9 13 14 14 21 24 25 25
+INT_A                : 4 6 8 9
+STRING               : 10
+STRING_A             : 10
+[                    : 8 9 9 13 14 14 24 25 25
+]                    : 8 9 9 13 14 14 24 25 25
+error                : 
+
+Nonterminals, with rules where they appear
+
+atribuicao           : 2
+atribuicoes          : 1 2
+body                 : 0
+expressao            : 13 14 15 16 22
+fator                : 18 19 20
+operacao             : 11
+operacoes            : 1 11
+termo                : 15 16 17 18 19
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . body
+    (1) body -> . ( atribuicoes operacoes
+
+    (               shift and go to state 2
+
+    body                           shift and go to state 1
+
+state 1
+
+    (0) S' -> body .
+
+
+
+state 2
+
+    (1) body -> ( . atribuicoes operacoes
+    (2) atribuicoes -> . atribuicoes atribuicao
+    (3) atribuicoes -> .
+
+    INT_A           reduce using rule 3 (atribuicoes -> .)
+    FLOAT_A         reduce using rule 3 (atribuicoes -> .)
+    STRING_A        reduce using rule 3 (atribuicoes -> .)
+    ID              reduce using rule 3 (atribuicoes -> .)
+    $end            reduce using rule 3 (atribuicoes -> .)
+
+    atribuicoes                    shift and go to state 3
+
+state 3
+
+    (1) body -> ( atribuicoes . operacoes
+    (2) atribuicoes -> atribuicoes . atribuicao
+    (11) operacoes -> . operacoes operacao
+    (12) operacoes -> .
+    (4) atribuicao -> . INT_A ID EQUAL INT ;
+    (5) atribuicao -> . FLOAT_A ID EQUAL FLOAT ;
+    (6) atribuicao -> . INT_A ID ;
+    (7) atribuicao -> . FLOAT_A ID ;
+    (8) atribuicao -> . INT_A ID [ INT ] ;
+    (9) atribuicao -> . INT_A ID [ INT ] [ INT ] ;
+    (10) atribuicao -> . STRING_A ID EQUAL STRING ;
+
+    ID              reduce using rule 12 (operacoes -> .)
+    $end            reduce using rule 12 (operacoes -> .)
+    INT_A           shift and go to state 6
+    FLOAT_A         shift and go to state 7
+    STRING_A        shift and go to state 8
+
+    operacoes                      shift and go to state 4
+    atribuicao                     shift and go to state 5
+
+state 4
+
+    (1) body -> ( atribuicoes operacoes .
+    (11) operacoes -> operacoes . operacao
+    (13) operacao -> . ID [ INT ] EQUAL expressao ;
+    (14) operacao -> . ID [ INT ] [ INT ] EQUAL expressao ;
+
+    $end            reduce using rule 1 (body -> ( atribuicoes operacoes .)
+    ID              shift and go to state 10
+
+    operacao                       shift and go to state 9
+
+state 5
+
+    (2) atribuicoes -> atribuicoes atribuicao .
+
+    INT_A           reduce using rule 2 (atribuicoes -> atribuicoes atribuicao .)
+    FLOAT_A         reduce using rule 2 (atribuicoes -> atribuicoes atribuicao .)
+    STRING_A        reduce using rule 2 (atribuicoes -> atribuicoes atribuicao .)
+    ID              reduce using rule 2 (atribuicoes -> atribuicoes atribuicao .)
+    $end            reduce using rule 2 (atribuicoes -> atribuicoes atribuicao .)
+
+
+state 6
+
+    (4) atribuicao -> INT_A . ID EQUAL INT ;
+    (6) atribuicao -> INT_A . ID ;
+    (8) atribuicao -> INT_A . ID [ INT ] ;
+    (9) atribuicao -> INT_A . ID [ INT ] [ INT ] ;
+
+    ID              shift and go to state 11
+
+
+state 7
+
+    (5) atribuicao -> FLOAT_A . ID EQUAL FLOAT ;
+    (7) atribuicao -> FLOAT_A . ID ;
+
+    ID              shift and go to state 12
+
+
+state 8
+
+    (10) atribuicao -> STRING_A . ID EQUAL STRING ;
+
+    ID              shift and go to state 13
+
+
+state 9
+
+    (11) operacoes -> operacoes operacao .
+
+    ID              reduce using rule 11 (operacoes -> operacoes operacao .)
+    $end            reduce using rule 11 (operacoes -> operacoes operacao .)
+
+
+state 10
+
+    (13) operacao -> ID . [ INT ] EQUAL expressao ;
+    (14) operacao -> ID . [ INT ] [ INT ] EQUAL expressao ;
+
+    [               shift and go to state 14
+
+
+state 11
+
+    (4) atribuicao -> INT_A ID . EQUAL INT ;
+    (6) atribuicao -> INT_A ID . ;
+    (8) atribuicao -> INT_A ID . [ INT ] ;
+    (9) atribuicao -> INT_A ID . [ INT ] [ INT ] ;
+
+    EQUAL           shift and go to state 15
+    ;               shift and go to state 16
+    [               shift and go to state 17
+
+
+state 12
+
+    (5) atribuicao -> FLOAT_A ID . EQUAL FLOAT ;
+    (7) atribuicao -> FLOAT_A ID . ;
+
+    EQUAL           shift and go to state 18
+    ;               shift and go to state 19
+
+
+state 13
+
+    (10) atribuicao -> STRING_A ID . EQUAL STRING ;
+
+    EQUAL           shift and go to state 20
+
+
+state 14
+
+    (13) operacao -> ID [ . INT ] EQUAL expressao ;
+    (14) operacao -> ID [ . INT ] [ INT ] EQUAL expressao ;
+
+    INT             shift and go to state 21
+
+
+state 15
+
+    (4) atribuicao -> INT_A ID EQUAL . INT ;
+
+    INT             shift and go to state 22
+
+
+state 16
+
+    (6) atribuicao -> INT_A ID ; .
+
+    INT_A           reduce using rule 6 (atribuicao -> INT_A ID ; .)
+    FLOAT_A         reduce using rule 6 (atribuicao -> INT_A ID ; .)
+    STRING_A        reduce using rule 6 (atribuicao -> INT_A ID ; .)
+    ID              reduce using rule 6 (atribuicao -> INT_A ID ; .)
+    $end            reduce using rule 6 (atribuicao -> INT_A ID ; .)
+
+
+state 17
+
+    (8) atribuicao -> INT_A ID [ . INT ] ;
+    (9) atribuicao -> INT_A ID [ . INT ] [ INT ] ;
+
+    INT             shift and go to state 23
+
+
+state 18
+
+    (5) atribuicao -> FLOAT_A ID EQUAL . FLOAT ;
+
+    FLOAT           shift and go to state 24
+
+
+state 19
+
+    (7) atribuicao -> FLOAT_A ID ; .
+
+    INT_A           reduce using rule 7 (atribuicao -> FLOAT_A ID ; .)
+    FLOAT_A         reduce using rule 7 (atribuicao -> FLOAT_A ID ; .)
+    STRING_A        reduce using rule 7 (atribuicao -> FLOAT_A ID ; .)
+    ID              reduce using rule 7 (atribuicao -> FLOAT_A ID ; .)
+    $end            reduce using rule 7 (atribuicao -> FLOAT_A ID ; .)
+
+
+state 20
+
+    (10) atribuicao -> STRING_A ID EQUAL . STRING ;
+
+    STRING          shift and go to state 25
+
+
+state 21
+
+    (13) operacao -> ID [ INT . ] EQUAL expressao ;
+    (14) operacao -> ID [ INT . ] [ INT ] EQUAL expressao ;
+
+    ]               shift and go to state 26
+
+
+state 22
+
+    (4) atribuicao -> INT_A ID EQUAL INT . ;
+
+    ;               shift and go to state 27
+
+
+state 23
+
+    (8) atribuicao -> INT_A ID [ INT . ] ;
+    (9) atribuicao -> INT_A ID [ INT . ] [ INT ] ;
+
+    ]               shift and go to state 28
+
+
+state 24
+
+    (5) atribuicao -> FLOAT_A ID EQUAL FLOAT . ;
+
+    ;               shift and go to state 29
+
+
+state 25
+
+    (10) atribuicao -> STRING_A ID EQUAL STRING . ;
+
+    ;               shift and go to state 30
+
+
+state 26
+
+    (13) operacao -> ID [ INT ] . EQUAL expressao ;
+    (14) operacao -> ID [ INT ] . [ INT ] EQUAL expressao ;
+
+    EQUAL           shift and go to state 32
+    [               shift and go to state 31
+
+
+state 27
+
+    (4) atribuicao -> INT_A ID EQUAL INT ; .
+
+    INT_A           reduce using rule 4 (atribuicao -> INT_A ID EQUAL INT ; .)
+    FLOAT_A         reduce using rule 4 (atribuicao -> INT_A ID EQUAL INT ; .)
+    STRING_A        reduce using rule 4 (atribuicao -> INT_A ID EQUAL INT ; .)
+    ID              reduce using rule 4 (atribuicao -> INT_A ID EQUAL INT ; .)
+    $end            reduce using rule 4 (atribuicao -> INT_A ID EQUAL INT ; .)
+
+
+state 28
+
+    (8) atribuicao -> INT_A ID [ INT ] . ;
+    (9) atribuicao -> INT_A ID [ INT ] . [ INT ] ;
+
+    ;               shift and go to state 34
+    [               shift and go to state 33
+
+
+state 29
+
+    (5) atribuicao -> FLOAT_A ID EQUAL FLOAT ; .
+
+    INT_A           reduce using rule 5 (atribuicao -> FLOAT_A ID EQUAL FLOAT ; .)
+    FLOAT_A         reduce using rule 5 (atribuicao -> FLOAT_A ID EQUAL FLOAT ; .)
+    STRING_A        reduce using rule 5 (atribuicao -> FLOAT_A ID EQUAL FLOAT ; .)
+    ID              reduce using rule 5 (atribuicao -> FLOAT_A ID EQUAL FLOAT ; .)
+    $end            reduce using rule 5 (atribuicao -> FLOAT_A ID EQUAL FLOAT ; .)
+
+
+state 30
+
+    (10) atribuicao -> STRING_A ID EQUAL STRING ; .
+
+    INT_A           reduce using rule 10 (atribuicao -> STRING_A ID EQUAL STRING ; .)
+    FLOAT_A         reduce using rule 10 (atribuicao -> STRING_A ID EQUAL STRING ; .)
+    STRING_A        reduce using rule 10 (atribuicao -> STRING_A ID EQUAL STRING ; .)
+    ID              reduce using rule 10 (atribuicao -> STRING_A ID EQUAL STRING ; .)
+    $end            reduce using rule 10 (atribuicao -> STRING_A ID EQUAL STRING ; .)
+
+
+state 31
+
+    (14) operacao -> ID [ INT ] [ . INT ] EQUAL expressao ;
+
+    INT             shift and go to state 35
+
+
+state 32
+
+    (13) operacao -> ID [ INT ] EQUAL . expressao ;
+    (15) expressao -> . expressao + termo
+    (16) expressao -> . expressao - termo
+    (17) expressao -> . termo
+    (18) termo -> . termo * fator
+    (19) termo -> . termo / fator
+    (20) termo -> . fator
+    (21) fator -> . INT
+    (22) fator -> . ( expressao )
+    (23) fator -> . ID
+    (24) fator -> . ID [ INT ]
+    (25) fator -> . ID [ INT ] [ INT ]
+
+    INT             shift and go to state 37
+    (               shift and go to state 41
+    ID              shift and go to state 36
+
+    expressao                      shift and go to state 38
+    termo                          shift and go to state 39
+    fator                          shift and go to state 40
+
+state 33
+
+    (9) atribuicao -> INT_A ID [ INT ] [ . INT ] ;
+
+    INT             shift and go to state 42
+
+
+state 34
+
+    (8) atribuicao -> INT_A ID [ INT ] ; .
+
+    INT_A           reduce using rule 8 (atribuicao -> INT_A ID [ INT ] ; .)
+    FLOAT_A         reduce using rule 8 (atribuicao -> INT_A ID [ INT ] ; .)
+    STRING_A        reduce using rule 8 (atribuicao -> INT_A ID [ INT ] ; .)
+    ID              reduce using rule 8 (atribuicao -> INT_A ID [ INT ] ; .)
+    $end            reduce using rule 8 (atribuicao -> INT_A ID [ INT ] ; .)
+
+
+state 35
+
+    (14) operacao -> ID [ INT ] [ INT . ] EQUAL expressao ;
+
+    ]               shift and go to state 43
+
+
+state 36
+
+    (23) fator -> ID .
+    (24) fator -> ID . [ INT ]
+    (25) fator -> ID . [ INT ] [ INT ]
+
+    *               reduce using rule 23 (fator -> ID .)
+    /               reduce using rule 23 (fator -> ID .)
+    ;               reduce using rule 23 (fator -> ID .)
+    +               reduce using rule 23 (fator -> ID .)
+    -               reduce using rule 23 (fator -> ID .)
+    )               reduce using rule 23 (fator -> ID .)
+    [               shift and go to state 44
+
+
+state 37
+
+    (21) fator -> INT .
+
+    *               reduce using rule 21 (fator -> INT .)
+    /               reduce using rule 21 (fator -> INT .)
+    ;               reduce using rule 21 (fator -> INT .)
+    +               reduce using rule 21 (fator -> INT .)
+    -               reduce using rule 21 (fator -> INT .)
+    )               reduce using rule 21 (fator -> INT .)
+
+
+state 38
+
+    (13) operacao -> ID [ INT ] EQUAL expressao . ;
+    (15) expressao -> expressao . + termo
+    (16) expressao -> expressao . - termo
+
+    ;               shift and go to state 45
+    +               shift and go to state 46
+    -               shift and go to state 47
+
+
+state 39
+
+    (17) expressao -> termo .
+    (18) termo -> termo . * fator
+    (19) termo -> termo . / fator
+
+    ;               reduce using rule 17 (expressao -> termo .)
+    +               reduce using rule 17 (expressao -> termo .)
+    -               reduce using rule 17 (expressao -> termo .)
+    )               reduce using rule 17 (expressao -> termo .)
+    *               shift and go to state 48
+    /               shift and go to state 49
+
+
+state 40
+
+    (20) termo -> fator .
+
+    *               reduce using rule 20 (termo -> fator .)
+    /               reduce using rule 20 (termo -> fator .)
+    ;               reduce using rule 20 (termo -> fator .)
+    +               reduce using rule 20 (termo -> fator .)
+    -               reduce using rule 20 (termo -> fator .)
+    )               reduce using rule 20 (termo -> fator .)
+
+
+state 41
+
+    (22) fator -> ( . expressao )
+    (15) expressao -> . expressao + termo
+    (16) expressao -> . expressao - termo
+    (17) expressao -> . termo
+    (18) termo -> . termo * fator
+    (19) termo -> . termo / fator
+    (20) termo -> . fator
+    (21) fator -> . INT
+    (22) fator -> . ( expressao )
+    (23) fator -> . ID
+    (24) fator -> . ID [ INT ]
+    (25) fator -> . ID [ INT ] [ INT ]
+
+    INT             shift and go to state 37
+    (               shift and go to state 41
+    ID              shift and go to state 36
+
+    expressao                      shift and go to state 50
+    termo                          shift and go to state 39
+    fator                          shift and go to state 40
+
+state 42
+
+    (9) atribuicao -> INT_A ID [ INT ] [ INT . ] ;
+
+    ]               shift and go to state 51
+
+
+state 43
+
+    (14) operacao -> ID [ INT ] [ INT ] . EQUAL expressao ;
+
+    EQUAL           shift and go to state 52
+
+
+state 44
+
+    (24) fator -> ID [ . INT ]
+    (25) fator -> ID [ . INT ] [ INT ]
+
+    INT             shift and go to state 53
+
+
+state 45
+
+    (13) operacao -> ID [ INT ] EQUAL expressao ; .
+
+    ID              reduce using rule 13 (operacao -> ID [ INT ] EQUAL expressao ; .)
+    $end            reduce using rule 13 (operacao -> ID [ INT ] EQUAL expressao ; .)
+
+
+state 46
+
+    (15) expressao -> expressao + . termo
+    (18) termo -> . termo * fator
+    (19) termo -> . termo / fator
+    (20) termo -> . fator
+    (21) fator -> . INT
+    (22) fator -> . ( expressao )
+    (23) fator -> . ID
+    (24) fator -> . ID [ INT ]
+    (25) fator -> . ID [ INT ] [ INT ]
+
+    INT             shift and go to state 37
+    (               shift and go to state 41
+    ID              shift and go to state 36
+
+    termo                          shift and go to state 54
+    fator                          shift and go to state 40
+
+state 47
+
+    (16) expressao -> expressao - . termo
+    (18) termo -> . termo * fator
+    (19) termo -> . termo / fator
+    (20) termo -> . fator
+    (21) fator -> . INT
+    (22) fator -> . ( expressao )
+    (23) fator -> . ID
+    (24) fator -> . ID [ INT ]
+    (25) fator -> . ID [ INT ] [ INT ]
+
+    INT             shift and go to state 37
+    (               shift and go to state 41
+    ID              shift and go to state 36
+
+    termo                          shift and go to state 55
+    fator                          shift and go to state 40
+
+state 48
+
+    (18) termo -> termo * . fator
+    (21) fator -> . INT
+    (22) fator -> . ( expressao )
+    (23) fator -> . ID
+    (24) fator -> . ID [ INT ]
+    (25) fator -> . ID [ INT ] [ INT ]
+
+    INT             shift and go to state 37
+    (               shift and go to state 41
+    ID              shift and go to state 36
+
+    fator                          shift and go to state 56
+
+state 49
+
+    (19) termo -> termo / . fator
+    (21) fator -> . INT
+    (22) fator -> . ( expressao )
+    (23) fator -> . ID
+    (24) fator -> . ID [ INT ]
+    (25) fator -> . ID [ INT ] [ INT ]
+
+    INT             shift and go to state 37
+    (               shift and go to state 41
+    ID              shift and go to state 36
+
+    fator                          shift and go to state 57
+
+state 50
+
+    (22) fator -> ( expressao . )
+    (15) expressao -> expressao . + termo
+    (16) expressao -> expressao . - termo
+
+    )               shift and go to state 58
+    +               shift and go to state 46
+    -               shift and go to state 47
+
+
+state 51
+
+    (9) atribuicao -> INT_A ID [ INT ] [ INT ] . ;
+
+    ;               shift and go to state 59
+
+
+state 52
+
+    (14) operacao -> ID [ INT ] [ INT ] EQUAL . expressao ;
+    (15) expressao -> . expressao + termo
+    (16) expressao -> . expressao - termo
+    (17) expressao -> . termo
+    (18) termo -> . termo * fator
+    (19) termo -> . termo / fator
+    (20) termo -> . fator
+    (21) fator -> . INT
+    (22) fator -> . ( expressao )
+    (23) fator -> . ID
+    (24) fator -> . ID [ INT ]
+    (25) fator -> . ID [ INT ] [ INT ]
+
+    INT             shift and go to state 37
+    (               shift and go to state 41
+    ID              shift and go to state 36
+
+    expressao                      shift and go to state 60
+    termo                          shift and go to state 39
+    fator                          shift and go to state 40
+
+state 53
+
+    (24) fator -> ID [ INT . ]
+    (25) fator -> ID [ INT . ] [ INT ]
+
+    ]               shift and go to state 61
+
+
+state 54
+
+    (15) expressao -> expressao + termo .
+    (18) termo -> termo . * fator
+    (19) termo -> termo . / fator
+
+    ;               reduce using rule 15 (expressao -> expressao + termo .)
+    +               reduce using rule 15 (expressao -> expressao + termo .)
+    -               reduce using rule 15 (expressao -> expressao + termo .)
+    )               reduce using rule 15 (expressao -> expressao + termo .)
+    *               shift and go to state 48
+    /               shift and go to state 49
+
+
+state 55
+
+    (16) expressao -> expressao - termo .
+    (18) termo -> termo . * fator
+    (19) termo -> termo . / fator
+
+    ;               reduce using rule 16 (expressao -> expressao - termo .)
+    +               reduce using rule 16 (expressao -> expressao - termo .)
+    -               reduce using rule 16 (expressao -> expressao - termo .)
+    )               reduce using rule 16 (expressao -> expressao - termo .)
+    *               shift and go to state 48
+    /               shift and go to state 49
+
+
+state 56
+
+    (18) termo -> termo * fator .
+
+    *               reduce using rule 18 (termo -> termo * fator .)
+    /               reduce using rule 18 (termo -> termo * fator .)
+    ;               reduce using rule 18 (termo -> termo * fator .)
+    +               reduce using rule 18 (termo -> termo * fator .)
+    -               reduce using rule 18 (termo -> termo * fator .)
+    )               reduce using rule 18 (termo -> termo * fator .)
+
+
+state 57
+
+    (19) termo -> termo / fator .
+
+    *               reduce using rule 19 (termo -> termo / fator .)
+    /               reduce using rule 19 (termo -> termo / fator .)
+    ;               reduce using rule 19 (termo -> termo / fator .)
+    +               reduce using rule 19 (termo -> termo / fator .)
+    -               reduce using rule 19 (termo -> termo / fator .)
+    )               reduce using rule 19 (termo -> termo / fator .)
+
+
+state 58
+
+    (22) fator -> ( expressao ) .
+
+    *               reduce using rule 22 (fator -> ( expressao ) .)
+    /               reduce using rule 22 (fator -> ( expressao ) .)
+    ;               reduce using rule 22 (fator -> ( expressao ) .)
+    +               reduce using rule 22 (fator -> ( expressao ) .)
+    -               reduce using rule 22 (fator -> ( expressao ) .)
+    )               reduce using rule 22 (fator -> ( expressao ) .)
+
+
+state 59
+
+    (9) atribuicao -> INT_A ID [ INT ] [ INT ] ; .
+
+    INT_A           reduce using rule 9 (atribuicao -> INT_A ID [ INT ] [ INT ] ; .)
+    FLOAT_A         reduce using rule 9 (atribuicao -> INT_A ID [ INT ] [ INT ] ; .)
+    STRING_A        reduce using rule 9 (atribuicao -> INT_A ID [ INT ] [ INT ] ; .)
+    ID              reduce using rule 9 (atribuicao -> INT_A ID [ INT ] [ INT ] ; .)
+    $end            reduce using rule 9 (atribuicao -> INT_A ID [ INT ] [ INT ] ; .)
+
+
+state 60
+
+    (14) operacao -> ID [ INT ] [ INT ] EQUAL expressao . ;
+    (15) expressao -> expressao . + termo
+    (16) expressao -> expressao . - termo
+
+    ;               shift and go to state 62
+    +               shift and go to state 46
+    -               shift and go to state 47
+
+
+state 61
+
+    (24) fator -> ID [ INT ] .
+    (25) fator -> ID [ INT ] . [ INT ]
+
+    *               reduce using rule 24 (fator -> ID [ INT ] .)
+    /               reduce using rule 24 (fator -> ID [ INT ] .)
+    ;               reduce using rule 24 (fator -> ID [ INT ] .)
+    +               reduce using rule 24 (fator -> ID [ INT ] .)
+    -               reduce using rule 24 (fator -> ID [ INT ] .)
+    )               reduce using rule 24 (fator -> ID [ INT ] .)
+    [               shift and go to state 63
+
+
+state 62
+
+    (14) operacao -> ID [ INT ] [ INT ] EQUAL expressao ; .
+
+    ID              reduce using rule 14 (operacao -> ID [ INT ] [ INT ] EQUAL expressao ; .)
+    $end            reduce using rule 14 (operacao -> ID [ INT ] [ INT ] EQUAL expressao ; .)
+
+
+state 63
+
+    (25) fator -> ID [ INT ] [ . INT ]
+
+    INT             shift and go to state 64
+
+
+state 64
+
+    (25) fator -> ID [ INT ] [ INT . ]
+
+    ]               shift and go to state 65
+
+
+state 65
+
+    (25) fator -> ID [ INT ] [ INT ] .
+
+    *               reduce using rule 25 (fator -> ID [ INT ] [ INT ] .)
+    /               reduce using rule 25 (fator -> ID [ INT ] [ INT ] .)
+    ;               reduce using rule 25 (fator -> ID [ INT ] [ INT ] .)
+    +               reduce using rule 25 (fator -> ID [ INT ] [ INT ] .)
+    -               reduce using rule 25 (fator -> ID [ INT ] [ INT ] .)
+    )               reduce using rule 25 (fator -> ID [ INT ] [ INT ] .)
+

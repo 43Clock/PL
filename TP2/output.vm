@@ -1,0 +1,62 @@
+//{'a': 0, 'b': 1}
+//{'c': 2, 'd': 3}
+//{'array': (4, 13)}
+//{'array2d': (14, 19, 3)}
+//{}
+pushi 0
+pushi 3
+pushf 0.0
+pushf 3.0
+pushn 10
+pushn 6
+START
+pushgp
+pushi 4
+padd
+pushi 5
+pushi 5
+storen
+pushgp
+pushi 14
+padd
+pushi 2
+pushi 3
+storen
+pushgp
+pushi 14
+padd
+pushi 0
+pushgp
+pushi 4
+padd
+pushi 5
+loadn
+
+storen
+pushgp
+pushi 14
+padd
+pushi 5
+pushi 2
+pushi 3
+pushi 2
+pushi 10
+pushi 2
+pushgp
+pushi 14
+padd
+pushi 2
+loadn
+
+add
+
+div
+
+add
+
+mul
+
+add
+
+storen
+

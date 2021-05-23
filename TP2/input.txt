@@ -1,0 +1,10 @@
+int a;
+int b = 3;
+float c;
+float d = 3.0;
+int array[10];
+int array2d[2][3];
+array[5] = 5;
+array2d[0][2] = 3;
+array2d[0][0] = array[5];
+array2d[1][2] = 2+(3*(2+(10/(2+array2d[0][2]))));
