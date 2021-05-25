@@ -252,7 +252,9 @@ def p_imprime_var(p):
     elif p[2].strip() in p.parser.variaveis_string:
         aux += f"pushg {p.parser.variaveis_string[p[2].strip()]}\n"
         aux += f"writes\n"
-    p[0] = aux     
+    aux += "pushs \"\\n\"\n"
+    aux += "writes\n"    
+    p[0] = aux
 
 #TODO imprimir com \n
 def p_imprime_array(p):
@@ -262,6 +264,8 @@ def p_imprime_array(p):
     aux += "padd\n"
     aux += f"pushi {p[4]}\n"
     aux += "loadn\nwritei\n"
+    aux += "pushs \"\\n\"\n"
+    aux += "writes\n" 
     p[0] = aux
 
 def p_imprime_array2d(p):
@@ -271,6 +275,8 @@ def p_imprime_array2d(p):
     aux += "padd\n"
     aux += f"pushi {p[4]*p.parser.variaveis_arrays2d[p[2].strip()][2]+p[7]}\n"
     aux += "loadn\nwritei\n"
+    aux += "pushs \"\\n\"\n"
+    aux += "writes\n" 
     p[0] = aux
 
 

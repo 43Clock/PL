@@ -114,17 +114,23 @@ mul
 storeg 1
 pushg 1
 writei
+pushs "\n"
+writes
 pushgp
 pushi 5
 padd
 pushi 5
 loadn
 writei
+pushs "\n"
+writes
 pushgp
 pushi 15
 padd
 pushi 2
 loadn
 writei
+pushs "\n"
+writes
 STOP
 
