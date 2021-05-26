@@ -1,0 +1,15 @@
+int i;
+int count = 0;
+int n;
+int r;
+
+read n;
+for(i = 0;i<n;i++;){
+    read r;
+    if(r%2 != 0){
+        count++;
+        print r;
+    }
+}
+print "Numero de Impares:";
+print count;

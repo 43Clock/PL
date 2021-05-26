@@ -1,0 +1,45 @@
+pushi 0
+pushi 0
+pushi 0
+pushi 0
+START
+read
+atoi
+storeg 0
+pushi 0storeg 3
+cicloFor1:
+pushg 3
+pushg 0
+inf
+jz cicloForEnd1
+pushg 3
+pushi 0
+equal
+jz elseIf2
+read
+atoi
+storeg 1
+jump fimIf2
+elseIf2:
+read
+atoi
+storeg 2
+pushg 2
+pushg 1
+inf
+jz fimIf1
+pushg 2
+storeg 1
+fimIf1:
+fimIf2:
+pushg 3
+pushi 1
+add
+storeg 3
+jump cicloFor1
+cicloForEnd1:
+pushg 1
+writei
+pushs "\n"
+writes
+STOP

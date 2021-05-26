@@ -1,0 +1,10 @@
+int quadrado[4];
+int i;
+for (i = 0;i<4;i++;){
+    read quadrado[i];
+}
+if ((quadrado[0] != quadrado[1]) || (quadrado[1] != quadrado[2]) || (quadrado[2] != quadrado[3])){
+    print "Não é quadrado";
+}else{
+    print "É quadrado";
+}

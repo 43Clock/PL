@@ -1,0 +1,30 @@
+pushi 5
+pushi 1
+pushi 0
+pushi 0
+START
+pushi 0storeg 2
+cicloFor1:
+pushg 2
+pushg 0
+inf
+jz cicloForEnd1
+read
+atoi
+storeg 3
+pushg 1
+pushg 3
+mul
+
+storeg 1
+pushg 2
+pushi 1
+add
+storeg 2
+jump cicloFor1
+cicloForEnd1:
+pushg 1
+writei
+pushs "\n"
+writes
+STOP

@@ -1,0 +1,17 @@
+int n;
+int menor;
+int r;
+int i;
+
+read n;
+for (i = 0;i<n;i++;){
+    if(i == 0){
+        read menor;
+    }else {
+        read r;
+        if(r < menor){
+            menor = r;
+        }
+    }
+}
+print menor;

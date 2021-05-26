@@ -1,0 +1,10 @@
+int n = 5;
+int res = 1;
+int i;
+int r;
+
+for (i = 0;i<n;i++;){
+    read r;
+    res = res * r;
+}
+print res;

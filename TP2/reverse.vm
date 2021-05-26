@@ -1,0 +1,47 @@
+pushi 10
+pushn 10
+pushi 0
+START
+pushi 0storeg 11
+cicloFor1:
+pushg 11
+pushg 0
+inf
+jz cicloForEnd1
+pushgp
+pushi 1
+padd
+pushg 11
+read
+atoi
+storen
+pushg 11
+pushi 1
+add
+storeg 11
+jump cicloFor1
+cicloForEnd1:
+pushg 0
+pushi 1
+sub
+storeg 11
+cicloFor2:
+pushg 11
+pushi 0
+supeq
+jz cicloForEnd2
+pushgp
+pushi 1
+padd
+pushg 11
+loadn
+writei
+pushs "\n"
+writes
+pushg 11
+pushi 1
+sub
+storeg 11
+jump cicloFor2
+cicloForEnd2:
+STOP
