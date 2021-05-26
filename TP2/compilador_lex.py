@@ -1,7 +1,7 @@
 import ply.lex as lex
 import sys
 
-tokens = ['ID','INT','FLOAT','INT_A','FLOAT_A','STRING_A','EQUAL','STRING','FOR','READ',
+tokens = ['ID','INT','INT_A','STRING_A','EQUAL','STRING','FOR','READ',
             'AND','OR','LESS_EQUAL','MORE_EQUAL','EQUAL_EQUAL','DIF','PRINT','IF','ELSE']
 literals = ['+','-','*','/','%','(',')',';','{','}','[',']','>','<','!']
 
@@ -65,11 +65,6 @@ def t_INT_A(t):
     t.value = str(t.value)
     return t
 
-def t_FLOAT_A(t):
-    r'float\ +'
-    t.value = str(t.value)
-    return t
-
 def t_STRING_A(t):
     r'string\ +'
     t.value = str(t.value)
@@ -78,11 +73,6 @@ def t_STRING_A(t):
 def t_EQUAL(t):
     r'=\ *'
     t.value = str(t.value)
-    return t
-
-def t_FLOAT(t):
-    r'\d+\.\d+'
-    t.value = float(t.value)
     return t
 
 def t_INT(t):
