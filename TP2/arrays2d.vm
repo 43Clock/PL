@@ -1,0 +1,121 @@
+pushi 3
+pushi 0
+pushn 3
+pushn 6
+START
+pushi 0storeg 1
+cicloFor1:
+pushg 1
+pushi 3
+inf
+jz cicloForEnd1
+pushgp
+pushi 2
+padd
+pushg 1
+pushg 1
+pushg 0
+add
+
+storen
+pushg 1
+pushi 1
+add
+storeg 1
+jump cicloFor1
+cicloForEnd1:
+pushgp
+pushi 5
+padd
+pushi 0
+pushgp
+pushi 2
+padd
+pushi 0
+loadn
+
+storen
+pushgp
+pushi 5
+padd
+pushi 1
+pushgp
+pushi 2
+padd
+pushi 1
+loadn
+
+storen
+pushgp
+pushi 5
+padd
+pushi 2
+pushgp
+pushi 2
+padd
+pushi 2
+loadn
+
+storen
+pushgp
+pushi 5
+padd
+pushi 3
+pushg 0
+pushgp
+pushi 5
+padd
+pushi 0
+loadn
+
+pushi 3
+add
+
+mul
+
+storen
+pushgp
+pushi 5
+padd
+pushi 4
+pushgp
+pushi 2
+padd
+pushi 2
+loadn
+
+pushgp
+pushi 5
+padd
+pushi 0
+loadn
+
+pushi 3
+mod
+
+mul
+
+storen
+pushgp
+pushi 5
+padd
+pushi 5
+pushgp
+pushi 2
+padd
+pushi 1
+loadn
+
+pushgp
+pushi 5
+padd
+pushi 0
+loadn
+
+pushi 3
+sub
+
+mul
+
+storen
+STOP
