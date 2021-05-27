@@ -1,10 +1,13 @@
 pushn 4
 pushi 0
 START
-pushi 0storeg 4
+pushi 0
+storeg 4
 cicloFor1:
 pushg 4
+
 pushi 4
+
 inf
 jz cicloForEnd1
 pushgp

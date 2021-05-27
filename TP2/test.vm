@@ -1,10 +1,13 @@
 pushi 0
 pushn 3
 START
-pushi 0storeg 0
+pushi 0
+storeg 0
 cicloFor1:
 pushg 0
+
 pushi 3
+
 inf
 jz cicloForEnd1
 pushgp
@@ -12,6 +15,7 @@ pushi 1
 padd
 pushi 2
 pushi 3
+
 storen
 pushg 0
 pushi 1

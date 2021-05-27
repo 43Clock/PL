@@ -3,10 +3,13 @@ pushi 0
 pushn 3
 pushn 6
 START
-pushi 0storeg 1
+pushi 0
+storeg 1
 cicloFor1:
 pushg 1
+
 pushi 3
+
 inf
 jz cicloForEnd1
 pushgp
@@ -67,10 +70,8 @@ pushi 5
 padd
 pushi 0
 loadn
-
 pushi 3
 add
-
 mul
 
 storen
@@ -83,16 +84,13 @@ pushi 2
 padd
 pushi 2
 loadn
-
 pushgp
 pushi 5
 padd
 pushi 0
 loadn
-
 pushi 3
 mod
-
 mul
 
 storen
@@ -105,16 +103,13 @@ pushi 2
 padd
 pushi 1
 loadn
-
 pushgp
 pushi 5
 padd
 pushi 0
 loadn
-
 pushi 3
 sub
-
 mul
 
 storen

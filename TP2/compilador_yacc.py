@@ -740,11 +740,11 @@ def p_expressoes_expressao_logica(p):
 
 def p_expressao_mais(p):
     "expressao : expressao '+' termo"
-    p[0] = f"{p[1]}\n{p[3]}\nadd\n"
+    p[0] = f"{p[1]}{p[3]}add\n"
 
 def p_expressao_menos(p):
     "expressao : expressao '-' termo"
-    p[0]  = f"{p[1]}\n{p[3]}\nsub\n"
+    p[0]  = f"{p[1]}{p[3]}sub\n"
 
 def p_expressao_termo(p):
     "expressao : termo"
@@ -752,15 +752,15 @@ def p_expressao_termo(p):
 
 def p_termo_mult(p):
     "termo : termo '*' fator"
-    p[0] = f"{p[1]}\n{p[3]}\nmul\n"
+    p[0] = f"{p[1]}{p[3]}mul\n"
 
 def p_termo_div(p):
     "termo : termo '/' fator"
-    p[0] = f"{p[1]}\n{p[3]}\ndiv\n"
+    p[0] = f"{p[1]}{p[3]}div\n"
 
 def p_termo_mod(p):
     "termo : termo '%' fator"
-    p[0] = f"{p[1]}\n{p[3]}\nmod\n"
+    p[0] = f"{p[1]}{p[3]}mod\n"
 
 def p_termo_fator(p):
     "termo : fator"
@@ -769,7 +769,7 @@ def p_termo_fator(p):
 #quanto mais abaixo def mais prioridade
 def p_fator_NUM(p):
     "fator : INT "
-    p[0] = f"pushi {p[1]}"
+    p[0] = f"pushi {p[1]}\n"
 
 def p_fator_expressao(p):
     "fator : '(' expressao ')' "
@@ -777,10 +777,16 @@ def p_fator_expressao(p):
 
 def p_fator_int(p):
     "fator : ID"
-    if p[1].strip() in p.parser.variaveis_int:
-        p[0] = f"pushg {p.parser.variaveis_int[p[1].strip()]}"
-    elif p[1].strip() in p.parser.variaveis_float:
-        p[0] = f"pushg {p.parser.variaveis_float[p[1].strip()]}"
+    if p.parser.success:
+        if p[1].strip() in p.parser.variaveis_int:
+            p[0] = f"pushg {p.parser.variaveis_int[p[1].strip()]}\n"
+        else:
+            p.parser.success = False
+            p.parser.erro = f"Variável '{p[1].strip()}' não definida\n"
+            p[0] = ""
+    else:
+        p[0] = ""
+
 
 def p_fator_array(p):
     "fator : ID '[' INT ']' "
@@ -837,7 +843,7 @@ def p_fator_array2d(p):
             p.parser.erro = f"Variável '{p[1].strip()}' não definida\n"
             p[0] = ""
     else:
-        p[0] = ""      
+        p[0] = ""
 
 def p_expressao_relacional_expressao_sup(p):
     "expressao_relacional : expressao '>' expressao"

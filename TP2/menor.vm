@@ -6,14 +6,19 @@ START
 read
 atoi
 storeg 0
-pushi 0storeg 3
+pushi 0
+storeg 3
 cicloFor1:
 pushg 3
+
 pushg 0
+
 inf
 jz cicloForEnd1
 pushg 3
+
 pushi 0
+
 equal
 jz elseIf2
 read
@@ -25,10 +30,13 @@ read
 atoi
 storeg 2
 pushg 2
+
 pushg 1
+
 inf
 jz fimIf1
 pushg 2
+
 storeg 1
 fimIf1:
 fimIf2:

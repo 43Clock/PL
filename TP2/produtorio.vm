@@ -3,10 +3,13 @@ pushi 1
 pushi 0
 pushi 0
 START
-pushi 0storeg 2
+pushi 0
+storeg 2
 cicloFor1:
 pushg 2
+
 pushg 0
+
 inf
 jz cicloForEnd1
 read
