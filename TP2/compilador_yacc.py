@@ -91,20 +91,6 @@ def p_operacoes_fim(p):
     "operacoes : "
     p[0] = ""
 
-def p_operacao_variavel(p):
-    "operacao : ID EQUAL expressoes ';'"
-    if p.parser.success:
-        if p[1].strip() in p.parser.variaveis_int:
-            aux = f"{p[3]}\n"
-            aux += f"storeg {p.parser.variaveis_int[p[1].strip()]}\n"
-            p[0] = aux
-        else:
-            p.parser.success = False
-            p.parser.erro = f"Variável '{p[1].strip()}' não definida\n" 
-            p[0] = ""  
-    else:
-        p[0] = ""   
-
 def p_operacao_inc_variavel_incrementar(p):
     "operacao_inc : ID '+' '+' ';'"
     if p.parser.success:
@@ -168,48 +154,7 @@ def p_operacao_inc_variavel_minus_equal(p):
             p[0] = ""  
     else:
         p[0] = ""      
-
-
-
-def p_operacao_array_valor(p):
-    "operacao : ID '[' INT ']' EQUAL expressoes ';' "
-    if p.parser.success:
-        if p[1].strip() in p.parser.variaveis_arrays:
-            if p[3] > p.parser.variaveis_arrays[p[1].strip()][1]-p.parser.variaveis_arrays[p[1].strip()][0]:
-                p.parser.success = False
-                p.parser.erro = f"Array Index Out Of Bounds\n"
-            aux  = "pushgp\n"
-            aux += f"pushi {p.parser.variaveis_arrays[p[1].strip()][0]}\n"
-            aux += "padd\n"
-            aux += f"pushi {p[3]}\n"
-            aux += f"{p[6]}\n"
-            aux += "storen\n"
-            p[0] = aux
-        else:
-            p.parser.success = False
-            p.parser.erro = f"Variável '{p[1].strip()}' não definida\n"
-            p[0] = "" 
-    else:
-        p[0] = ""        
-
-
-def p_operacao_array_valor_id(p):
-    "operacao : ID '[' ID ']' EQUAL expressoes ';' "
-    if p.parser.success:
-        if p[1].strip() in p.parser.variaveis_arrays and p[3].strip() in p.parser.variaveis_int:
-            aux  = "pushgp\n"
-            aux += f"pushi {p.parser.variaveis_arrays[p[1].strip()][0]}\n"
-            aux += "padd\n"
-            aux += f"pushg {p.parser.variaveis_int[p[3].strip()]}\n"
-            aux += f"{p[6]}\n"
-            aux += "storen\n"
-            p[0] = aux
-        else:
-            p.parser.success = False
-            p.parser.erro = f"Variável '{p[1].strip()}' ou '{p[3].strip()}' não definida\n"
-            p[0] = "" 
-    else:
-        p[0] = ""        
+   
 
 def p_operacao_inc_array_incrementar(p):
     "operacao_inc : ID '[' INT ']' '+' '+' ';'"
@@ -399,28 +344,6 @@ def p_operacao_inc_array_minus_equal_id(p):
     else:
         p[0] = ""     
 
-#TODO verificar que n está outofbounds e que de facto é um array
-def p_operacao_array2d_valor(p):
-    "operacao : ID '[' INT ']' '[' INT ']' EQUAL expressoes ';' "
-    if p.parser.success:
-        if p[1].strip() in p.parser.variaveis_arrays2d:
-            if p[6] > p.parser.variaveis_arrays2d[p[1].strip()][2]-1 or p[3]>(p.parser.variaveis_arrays2d[p[1].strip()][1]-p.parser.variaveis_arrays2d[p[1].strip()][0])/p.parser.variaveis_arrays2d[p[1].strip()][2]:
-                p.parser.success = False
-                p.parser.erro = f"Array Index Out Of Bounds\n"
-            aux  = "pushgp\n"
-            aux += f"pushi {p.parser.variaveis_arrays2d[p[1].strip()][0]}\n"
-            aux += "padd\n"
-            aux += f"pushi {p[3]*p.parser.variaveis_arrays2d[p[1].strip()][2]+p[6]}\n"
-            aux += f"{p[9]}\n"
-            aux += "storen\n"
-            p[0] = aux
-        else:
-            p.parser.success = False
-            p.parser.erro = f"Variável '{p[1].strip()}' ou '{p[3].strip()}' não definida\n"
-            p[0] = "" 
-    else:
-        p[0] = ""   
-
 def p_operacao_inc_array2d_incrementar(p):
     "operacao_inc : ID '[' INT ']' '[' INT ']' '+' '+' ';'"
     if p.parser.success:
@@ -512,6 +435,218 @@ def p_operacao_inc_array2d_minus_equal(p):
             p[0] = "" 
     else:
         p[0] = ""      
+
+
+def p_operacao_variavel(p):
+    "operacao : ID EQUAL expressoes ';'"
+    if p.parser.success:
+        if p[1].strip() in p.parser.variaveis_int:
+            aux = f"{p[3]}\n"
+            aux += f"storeg {p.parser.variaveis_int[p[1].strip()]}\n"
+            p[0] = aux
+        else:
+            p.parser.success = False
+            p.parser.erro = f"Variável '{p[1].strip()}' não definida\n" 
+            p[0] = ""  
+    else:
+        p[0] = ""   
+
+def p_operacao_array2d_valor(p):
+    "operacao : ID '[' INT ']' '[' INT ']' EQUAL expressoes ';' "
+    if p.parser.success:
+        if p[1].strip() in p.parser.variaveis_arrays2d:
+            if p[6] > p.parser.variaveis_arrays2d[p[1].strip()][2]-1 or p[3]>(p.parser.variaveis_arrays2d[p[1].strip()][1]-p.parser.variaveis_arrays2d[p[1].strip()][0])/p.parser.variaveis_arrays2d[p[1].strip()][2]:
+                p.parser.success = False
+                p.parser.erro = f"Array Index Out Of Bounds\n"
+            aux  = "pushgp\n"
+            aux += f"pushi {p.parser.variaveis_arrays2d[p[1].strip()][0]}\n"
+            aux += "padd\n"
+            aux += f"pushi {p[3]*p.parser.variaveis_arrays2d[p[1].strip()][2]+p[6]}\n"
+            aux += f"{p[9]}\n"
+            aux += "storen\n"
+            p[0] = aux
+        else:
+            p.parser.success = False
+            p.parser.erro = f"Variável '{p[1].strip()}' ou '{p[3].strip()}' não definida\n"
+            p[0] = "" 
+    else:
+        p[0] = ""   
+
+def p_operacao_array_valor(p):
+    "operacao : ID '[' INT ']' EQUAL expressoes ';' "
+    if p.parser.success:
+        if p[1].strip() in p.parser.variaveis_arrays:
+            if p[3] > p.parser.variaveis_arrays[p[1].strip()][1]-p.parser.variaveis_arrays[p[1].strip()][0]:
+                p.parser.success = False
+                p.parser.erro = f"Array Index Out Of Bounds\n"
+            aux  = "pushgp\n"
+            aux += f"pushi {p.parser.variaveis_arrays[p[1].strip()][0]}\n"
+            aux += "padd\n"
+            aux += f"pushi {p[3]}\n"
+            aux += f"{p[6]}\n"
+            aux += "storen\n"
+            p[0] = aux
+        else:
+            p.parser.success = False
+            p.parser.erro = f"Variável '{p[1].strip()}' não definida\n"
+            p[0] = "" 
+    else:
+        p[0] = ""        
+
+
+def p_operacao_array_valor_id(p):
+    "operacao : ID '[' ID ']' EQUAL expressoes ';' "
+    if p.parser.success:
+        if p[1].strip() in p.parser.variaveis_arrays and p[3].strip() in p.parser.variaveis_int:
+            aux  = "pushgp\n"
+            aux += f"pushi {p.parser.variaveis_arrays[p[1].strip()][0]}\n"
+            aux += "padd\n"
+            aux += f"pushg {p.parser.variaveis_int[p[3].strip()]}\n"
+            aux += f"{p[6]}\n"
+            aux += "storen\n"
+            p[0] = aux
+        else:
+            p.parser.success = False
+            p.parser.erro = f"Variável '{p[1].strip()}' ou '{p[3].strip()}' não definida\n"
+            p[0] = "" 
+    else:
+        p[0] = ""     
+
+def p_imprime_var(p):
+    "operacao : PRINT ID ';' "
+    if p.parser.success:
+        aux = ""
+        if p[2].strip() in p.parser.variaveis_int:
+            aux += f"pushg {p.parser.variaveis_int[p[2].strip()]}\n"
+            aux += f"writei\n"
+            aux += "pushs \"\\n\"\n"
+            aux += "writes\n"    
+            p[0] = aux
+        elif p[2].strip() in p.parser.variaveis_string:
+            aux += f"pushg {p.parser.variaveis_string[p[2].strip()]}\n"
+            aux += f"writes\n"
+            aux += "pushs \"\\n\"\n"
+            aux += "writes\n"    
+            p[0] = aux
+        else:
+            p.parser.success = False
+            p.parser.erro = f"Variável '{p[2].strip()}' não definida\n"
+            p[0] = ""
+    else:
+        p[0] = ""     
+
+
+def p_imprime_array(p):
+    "operacao : PRINT ID '[' INT ']' ';' "
+    if p.parser.success:
+        if p[2].strip() in p.parser.variaveis_arrays:
+            if p[4] > p.parser.variaveis_arrays[p[2].strip()][1]-p.parser.variaveis_arrays[p[2].strip()][0]:
+                p.parser.success = False
+                p.parser.erro = f"Array Index Out Of Bounds\n"
+            aux  = "pushgp\n"
+            aux += f"pushi {p.parser.variaveis_arrays[p[2].strip()][0]}\n"
+            aux += "padd\n"
+            aux += f"pushi {p[4]}\n"
+            aux += "loadn\nwritei\n"
+            aux += "pushs \"\\n\"\n"
+            aux += "writes\n" 
+            p[0] = aux
+        else:
+            p.parser.success = False
+            p.parser.erro = f"Variável '{p[2].strip()}' não definida\n"
+            p[0] = ""
+    else:
+        p[0] = ""      
+
+def p_imprime_array_id(p):
+    "operacao : PRINT ID '[' ID ']' ';' "
+    if p.parser.success:
+        if p[2].strip() in p.parser.variaveis_arrays and p[4].strip() in p.parser.variaveis_int:
+            aux  = "pushgp\n"
+            aux += f"pushi {p.parser.variaveis_arrays[p[2].strip()][0]}\n"
+            aux += "padd\n"
+            aux += f"pushg {p.parser.variaveis_int[p[4].strip()]}\n"
+            aux += "loadn\nwritei\n"
+            aux += "pushs \"\\n\"\n"
+            aux += "writes\n" 
+            p[0] = aux
+        else:
+            p.parser.success = False
+            p.parser.erro = f"Variável '{p[2].strip()}' ou '{p[4].strip()}' não definida\n"
+            p[0] = ""
+    else:
+        p[0] = ""      
+
+def p_imprime_array2d(p):
+    "operacao : PRINT ID '[' INT ']' '[' INT ']' ';' "
+    if p.parser.success:
+        if p[2].strip() in p.parser.variaveis_arrays2d:
+            if p[7] > p.parser.variaveis_arrays2d[p[2].strip()][2]-1 or p[4]>(p.parser.variaveis_arrays2d[p[2].strip()][1]-p.parser.variaveis_arrays2d[p[2].strip()][0])/p.parser.variaveis_arrays2d[p[2].strip()][2]:
+                p.parser.success = False
+                p.parser.erro = f"Array Index Out Of Bounds\n"
+            aux  = "pushgp\n"
+            aux += f"pushi {p.parser.variaveis_arrays2d[p[2].strip()][0]}\n"
+            aux += "padd\n"
+            aux += f"pushi {p[4]*p.parser.variaveis_arrays2d[p[2].strip()][2]+p[7]}\n"
+            aux += "loadn\nwritei\n"
+            aux += "pushs \"\\n\"\n"
+            aux += "writes\n" 
+            p[0] = aux
+        else:
+            p.parser.success = False
+            p.parser.erro = f"Variável '{p[2].strip()}' não definida\n"
+            p[0] = ""
+    else:
+        p[0] = ""      
+
+def p_imprime_string(p):
+    "operacao : PRINT STRING ';' "
+    p[0] = f"pushs {p[2]}\nwrites\npushs \"\\n\"\nwrites\n"
+
+
+def p_operacao_if(p):
+    "operacao : IF '(' expressao_logica ')' '{' operacoes '}' "
+    aux = p[3]
+    aux += f"jz fimIf{p.parser.if_count}\n"
+    aux += p[6]
+    aux += f"fimIf{p.parser.if_count}:\n"
+    p.parser.if_count += 1
+    p[0] = aux
+
+
+def p_operacao_if_else(p):
+    "operacao : IF '(' expressao_logica ')' '{' operacoes '}' ELSE '{' operacoes '}' "
+    aux = p[3]
+    aux += f"jz elseIf{p.parser.if_count}\n"
+    aux += p[6]
+    aux += f"jump fimIf{p.parser.if_count}\n"
+    aux += f"elseIf{p.parser.if_count}:\n"
+    aux += p[10]
+    aux += f"fimIf{p.parser.if_count}:\n"
+    p.parser.if_count += 1
+    p[0] = aux
+
+def p_operacao_for(p):
+    "operacao : FOR '(' ID EQUAL expressao  ';'  expressao_logica   ';' operacao_inc ')' '{' operacoes '}' "
+    if p.parser.success:
+        if p[3].strip() in parser.variaveis_int:
+            aux = p[5]
+            aux += f"storeg {parser.variaveis_int[p[3].strip()]}\n"
+            aux += f"cicloFor{p.parser.for_count}:\n"
+            aux += p[7]
+            aux += f"jz cicloForEnd{p.parser.for_count}\n"
+            aux += p[12]
+            aux += p[9]
+            aux += f"jump cicloFor{p.parser.for_count}\n"       
+            aux += f"cicloForEnd{p.parser.for_count}:\n"
+            p.parser.for_count+=1
+            p[0] = aux
+        else:
+            p.parser.success = False
+            p.parser.erro = f"Variável '{p[3].strip()}' não definida\n"
+            p[0] = ""
+    else:
+        p[0] = ""   
 
 def p_operacao_read_variavel(p):
     "operacao : READ ID ';' "
@@ -783,141 +918,7 @@ def p_fator_logico_expressao_relacional(p):
     p[0] = p[1]
 
 
-def p_imprime_var(p):
-    "operacao : PRINT ID ';' "
-    if p.parser.success:
-        aux = ""
-        if p[2].strip() in p.parser.variaveis_int:
-            aux += f"pushg {p.parser.variaveis_int[p[2].strip()]}\n"
-            aux += f"writei\n"
-            aux += "pushs \"\\n\"\n"
-            aux += "writes\n"    
-            p[0] = aux
-        elif p[2].strip() in p.parser.variaveis_string:
-            aux += f"pushg {p.parser.variaveis_string[p[2].strip()]}\n"
-            aux += f"writes\n"
-            aux += "pushs \"\\n\"\n"
-            aux += "writes\n"    
-            p[0] = aux
-        else:
-            p.parser.success = False
-            p.parser.erro = f"Variável '{p[2].strip()}' não definida\n"
-            p[0] = ""
-    else:
-        p[0] = ""     
-
-
-def p_imprime_array(p):
-    "operacao : PRINT ID '[' INT ']' ';' "
-    if p.parser.success:
-        if p[2].strip() in p.parser.variaveis_arrays:
-            if p[4] > p.parser.variaveis_arrays[p[2].strip()][1]-p.parser.variaveis_arrays[p[2].strip()][0]:
-                p.parser.success = False
-                p.parser.erro = f"Array Index Out Of Bounds\n"
-            aux  = "pushgp\n"
-            aux += f"pushi {p.parser.variaveis_arrays[p[2].strip()][0]}\n"
-            aux += "padd\n"
-            aux += f"pushi {p[4]}\n"
-            aux += "loadn\nwritei\n"
-            aux += "pushs \"\\n\"\n"
-            aux += "writes\n" 
-            p[0] = aux
-        else:
-            p.parser.success = False
-            p.parser.erro = f"Variável '{p[2].strip()}' não definida\n"
-            p[0] = ""
-    else:
-        p[0] = ""      
-
-def p_imprime_array_id(p):
-    "operacao : PRINT ID '[' ID ']' ';' "
-    if p.parser.success:
-        if p[2].strip() in p.parser.variaveis_arrays and p[4].strip() in p.parser.variaveis_int:
-            aux  = "pushgp\n"
-            aux += f"pushi {p.parser.variaveis_arrays[p[2].strip()][0]}\n"
-            aux += "padd\n"
-            aux += f"pushg {p.parser.variaveis_int[p[4].strip()]}\n"
-            aux += "loadn\nwritei\n"
-            aux += "pushs \"\\n\"\n"
-            aux += "writes\n" 
-            p[0] = aux
-        else:
-            p.parser.success = False
-            p.parser.erro = f"Variável '{p[2].strip()}' ou '{p[4].strip()}' não definida\n"
-            p[0] = ""
-    else:
-        p[0] = ""      
-
-def p_imprime_array2d(p):
-    "operacao : PRINT ID '[' INT ']' '[' INT ']' ';' "
-    if p.parser.success:
-        if p[2].strip() in p.parser.variaveis_arrays2d:
-            if p[7] > p.parser.variaveis_arrays2d[p[2].strip()][2]-1 or p[4]>(p.parser.variaveis_arrays2d[p[2].strip()][1]-p.parser.variaveis_arrays2d[p[2].strip()][0])/p.parser.variaveis_arrays2d[p[2].strip()][2]:
-                p.parser.success = False
-                p.parser.erro = f"Array Index Out Of Bounds\n"
-            aux  = "pushgp\n"
-            aux += f"pushi {p.parser.variaveis_arrays2d[p[2].strip()][0]}\n"
-            aux += "padd\n"
-            aux += f"pushi {p[4]*p.parser.variaveis_arrays2d[p[2].strip()][2]+p[7]}\n"
-            aux += "loadn\nwritei\n"
-            aux += "pushs \"\\n\"\n"
-            aux += "writes\n" 
-            p[0] = aux
-        else:
-            p.parser.success = False
-            p.parser.erro = f"Variável '{p[2].strip()}' não definida\n"
-            p[0] = ""
-    else:
-        p[0] = ""      
-
-def p_imprime_string(p):
-    "operacao : PRINT STRING ';' "
-    p[0] = f"pushs {p[2]}\nwrites\npushs \"\\n\"\nwrites\n"
-
-
-def p_operacao_if(p):
-    "operacao : IF '(' expressao_logica ')' '{' operacoes '}' "
-    aux = p[3]
-    aux += f"jz fimIf{p.parser.if_count}\n"
-    aux += p[6]
-    aux += f"fimIf{p.parser.if_count}:\n"
-    p.parser.if_count += 1
-    p[0] = aux
-
-
-def p_operacao_if_else(p):
-    "operacao : IF '(' expressao_logica ')' '{' operacoes '}' ELSE '{' operacoes '}' "
-    aux = p[3]
-    aux += f"jz elseIf{p.parser.if_count}\n"
-    aux += p[6]
-    aux += f"jump fimIf{p.parser.if_count}\n"
-    aux += f"elseIf{p.parser.if_count}:\n"
-    aux += p[10]
-    aux += f"fimIf{p.parser.if_count}:\n"
-    p.parser.if_count += 1
-    p[0] = aux
-
-def p_operacao_for(p):
-    "operacao : FOR '(' ID EQUAL expressao  ';'  expressao_logica   ';' operacao_inc ')' '{' operacoes '}' "
-    if p.parser.success:
-        if p[3].strip() in parser.variaveis_int:
-            aux = p[5]
-            aux += f"storeg {parser.variaveis_int[p[3].strip()]}\n"
-            aux += f"cicloFor{p.parser.for_count}:\n"
-            aux += p[7]
-            aux += f"jz cicloForEnd{p.parser.for_count}\n"
-            aux += p[12]
-            aux += p[9]
-            aux += f"jump cicloFor{p.parser.for_count}\n"       
-            aux += f"cicloForEnd{p.parser.for_count}:\n"
-            p.parser.for_count+=1
-            p[0] = aux
-        else:
-            p.parser.success = False
-            p.parser.erro = f"Variável '{p[3].strip()}' não definida\n"
-            p[0] = ""
-    else:
-        p[0] = ""       
+    
 
 
 def p_error(p):
