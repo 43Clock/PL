@@ -28,7 +28,7 @@ def p_atribuicao_int(p):
         p[0] = f"pushi {p[4]}\n"
     else:
         p.parser.success = False
-        p.parser.erro = f"Variável '{p[2]}' já definida\n"
+        p.parser.erro = f"Variável '{p[2]}' já definida.\n"
         p[0] = ""
 
 def p_atribuicao_int_null(p):
@@ -39,7 +39,7 @@ def p_atribuicao_int_null(p):
         p[0] = "pushi 0\n"
     else:
         p.parser.success = False
-        p.parser.erro = f"Variável '{p[2]}' já definida\n"
+        p.parser.erro = f"Variável '{p[2]}' já definida.\n"
         p[0] = ""
   
 
@@ -51,7 +51,7 @@ def p_atribuicao_array(p):
         p[0] = f"pushn {p[4]}\n"
     else:
         p.parser.success = False
-        p.parser.erro = f"Variável '{p[2]}' já definida\n"
+        p.parser.erro = f"Variável '{p[2]}' já definida.\n"
         p[0] = ""     
 
 def p_atribuicao_array2d(p):
@@ -62,7 +62,7 @@ def p_atribuicao_array2d(p):
         p[0] = f"pushn {p[4]*p[7]}\n"
     else:
         p.parser.success = False
-        p.parser.erro = f"Variável '{p[2]}' já definida\n"
+        p.parser.erro = f"Variável '{p[2]}' já definida.\n"
         p[0] = ""
         
 def p_atribuicao_string(p):
@@ -73,7 +73,7 @@ def p_atribuicao_string(p):
         p[0] = f"pushs {p[4]}\n"
     else:
         p.parser.success = False
-        p.parser.erro = f"Variável '{p[2]}' já definida\n"
+        p.parser.erro = f"Variável '{p[2]}' já definida.\n"
         p[0] = ""
 
 def p_operacoes_operacao(p):
@@ -102,7 +102,7 @@ def p_operacao_inc_variavel_incrementar(p):
             p[0] = aux
         else:
             p.parser.success = False
-            p.parser.erro = f"Variável '{p[1].strip()}' não definida\n"
+            p.parser.erro = f"Variável '{p[1].strip()}' não definida.\n"
             p[0] = ""   
     else:
         p[0] = ""   
@@ -118,7 +118,7 @@ def p_operacao_inc_variavel_decrementar(p):
             p[0] = aux
         else:
             p.parser.success = False
-            p.parser.erro = f"Variável '{p[1].strip()}' não definida\n"
+            p.parser.erro = f"Variável '{p[1].strip()}' não definida.\n"
             p[0] = ""  
     else:
         p[0] = ""
@@ -134,7 +134,7 @@ def p_operacao_inc_variavel_plus_equal(p):
             p[0] = aux
         else:
             p.parser.success = False
-            p.parser.erro = f"Variável '{p[1].strip()}' não definida\n"
+            p.parser.erro = f"Variável '{p[1].strip()}' não definida.\n"
             p[0] = ""   
     else:
         p[0] = ""    
@@ -150,7 +150,7 @@ def p_operacao_inc_variavel_minus_equal(p):
             p[0] = aux
         else:
             p.parser.success = False
-            p.parser.erro = f"Variável '{p[1].strip()}' não definida\n" 
+            p.parser.erro = f"Variável '{p[1].strip()}' não definida.\n" 
             p[0] = ""  
     else:
         p[0] = ""      
@@ -162,7 +162,7 @@ def p_operacao_inc_array_incrementar(p):
         if p[1].strip() in p.parser.variaveis_arrays:
             if p[3] > p.parser.variaveis_arrays[p[1].strip()][1]-p.parser.variaveis_arrays[p[1].strip()][0]:
                 p.parser.success = False
-                p.parser.erro = f"Array Index Out Of Bounds\n"
+                p.parser.erro = f"Array Index Out Of Bounds.\n"
             aux  = "pushgp\n"
             aux += f"pushi {p.parser.variaveis_arrays[p[1].strip()][0]}\n"
             aux += "padd\n"
@@ -174,7 +174,7 @@ def p_operacao_inc_array_incrementar(p):
             p[0] = aux
         else:
             p.parser.success = False
-            p.parser.erro = f"Variável '{p[1].strip()}' não definida\n"
+            p.parser.erro = f"Variável '{p[1].strip()}' não definida.\n"
             p[0] = "" 
     else:
         p[0] = ""   
@@ -196,9 +196,13 @@ def p_operacao_inc_array_incrementar_id(p):
             aux += f"add\n"
             aux += f"storen\n"
             p[0] = aux
+        elif p[1].strip() in p.parser.variaveis_arrays:
+            p.parser.success = False
+            p.parser.erro = f"Variável '{p[3].strip()}' não definida.\n"
+            p[0] = ""
         else:
             p.parser.success = False
-            p.parser.erro = f"Variável '{p[1].strip()}' ou '{p[3].strip()}' não definida\n"
+            p.parser.erro = f"Variável '{p[1].strip()}' não definida.\n"
             p[0] = "" 
     else:
         p[0] = ""    
@@ -209,7 +213,7 @@ def p_operacao_inc_array_decrementar(p):
         if p[1].strip() in p.parser.variaveis_arrays:
             if p[3] > p.parser.variaveis_arrays[p[1].strip()][1]-p.parser.variaveis_arrays[p[1].strip()][0]:
                 p.parser.success = False
-                p.parser.erro = f"Array Index Out Of Bounds\n"
+                p.parser.erro = f"Array Index Out Of Bounds.\n"
             aux  = "pushgp\n"
             aux += f"pushi {p.parser.variaveis_arrays[p[1].strip()][0]}\n"
             aux += "padd\n"
@@ -221,7 +225,7 @@ def p_operacao_inc_array_decrementar(p):
             p[0] = aux
         else:
             p.parser.success = False
-            p.parser.erro = f"Variável '{p[1].strip()}' não definida\n"
+            p.parser.erro = f"Variável '{p[1].strip()}' não definida.\n"
             p[0] = "" 
     else:
         p[0] = ""       
@@ -243,10 +247,14 @@ def p_operacao_inc_array_decrementar_id(p):
             aux += f"sub\n"
             aux += f"storen\n"
             p[0] = aux
+        elif p[1].strip() in p.parser.variaveis_arrays:
+            p.parser.success = False
+            p.parser.erro = f"Variável '{p[3].strip()}' não definida.\n"
+            p[0] = ""
         else:
             p.parser.success = False
-            p.parser.erro = f"Variável '{p[1].strip()}' ou '{p[3].strip()}' não definida\n"
-            p[0] = "" 
+            p.parser.erro = f"Variável '{p[1].strip()}' não definida.\n"
+            p[0] = ""
     else:
         p[0] = ""      
 
@@ -256,7 +264,7 @@ def p_operacao_inc_array_plus_equal(p):
         if p[1].strip() in p.parser.variaveis_arrays:
             if p[3] > p.parser.variaveis_arrays[p[1].strip()][1]-p.parser.variaveis_arrays[p[1].strip()][0]:
                 p.parser.success = False
-                p.parser.erro = f"Array Index Out Of Bounds\n"
+                p.parser.erro = f"Array Index Out Of Bounds.\n"
             aux  = "pushgp\n"
             aux += f"pushi {p.parser.variaveis_arrays[p[1].strip()][0]}\n"
             aux += "padd\n"
@@ -266,10 +274,14 @@ def p_operacao_inc_array_plus_equal(p):
             aux += f"add\n"
             aux += f"storen\n"
             p[0] = aux
+        elif p[1].strip() in p.parser.variaveis_arrays:
+            p.parser.success = False
+            p.parser.erro = f"Variável '{p[3].strip()}' não definida.\n"
+            p[0] = ""
         else:
             p.parser.success = False
-            p.parser.erro = f"Variável '{p[1].strip()}' não definida\n"
-            p[0] = "" 
+            p.parser.erro = f"Variável '{p[1].strip()}' não definida.\n"
+            p[0] = ""
     else:
         p[0] = ""       
 
@@ -290,10 +302,14 @@ def p_operacao_inc_array_plus_equal_id(p):
             aux += f"add\n"
             aux += f"storen\n"
             p[0] = aux
+        elif p[1].strip() in p.parser.variaveis_arrays:
+            p.parser.success = False
+            p.parser.erro = f"Variável '{p[3].strip()}' não definida.\n"
+            p[0] = ""
         else:
             p.parser.success = False
-            p.parser.erro = f"Variável '{p[1].strip()}' ou '{p[3].strip()}' não definida\n"
-            p[0] = "" 
+            p.parser.erro = f"Variável '{p[1].strip()}' não definida.\n"
+            p[0] =  ""
     else:
         p[0] = ""      
 
@@ -303,7 +319,7 @@ def p_operacao_inc_array_minus_equal(p):
         if p[1].strip() in p.parser.variaveis_arrays:
             if p[3] > p.parser.variaveis_arrays[p[1].strip()][1]-p.parser.variaveis_arrays[p[1].strip()][0]:
                 p.parser.success = False
-                p.parser.erro = f"Array Index Out Of Bounds\n"
+                p.parser.erro = f"Array Index Out Of Bounds.\n"
             aux  = "pushgp\n"
             aux += f"pushi {p.parser.variaveis_arrays[p[1].strip()][0]}\n"
             aux += "padd\n"
@@ -315,7 +331,7 @@ def p_operacao_inc_array_minus_equal(p):
             p[0] = aux
         else:
             p.parser.success = False
-            p.parser.erro = f"Variável '{p[1].strip()}' não definida\n"
+            p.parser.erro = f"Variável '{p[1].strip()}' não definida.\n"
             p[0] = "" 
     else:
         p[0] = ""      
@@ -337,10 +353,14 @@ def p_operacao_inc_array_minus_equal_id(p):
             aux += f"sub\n"
             aux += f"storen\n"
             p[0] = aux
+        elif p[1].strip() in p.parser.variaveis_arrays:
+            p.parser.success = False
+            p.parser.erro = f"Variável '{p[3].strip()}' não definida.\n"
+            p[0] = ""
         else:
             p.parser.success = False
-            p.parser.erro = f"Variável '{p[1].strip()}' ou '{p[3].strip()}' não definida\n"
-            p[0] = "" 
+            p.parser.erro = f"Variável '{p[1].strip()}' não definida.\n"
+            p[0] = ""
     else:
         p[0] = ""     
 
@@ -350,7 +370,7 @@ def p_operacao_inc_array2d_incrementar(p):
         if p[1].strip() in p.parser.variaveis_arrays2d:
             if p[6] > p.parser.variaveis_arrays2d[p[1].strip()][2]-1 or p[3]>(p.parser.variaveis_arrays2d[p[1].strip()][1]-p.parser.variaveis_arrays2d[p[1].strip()][0])/p.parser.variaveis_arrays2d[p[1].strip()][2]:
                 p.parser.success = False
-                p.parser.erro = f"Array Index Out Of Bounds\n"
+                p.parser.erro = f"Array Index Out Of Bounds.\n"
             aux  = "pushgp\n"
             aux += f"pushi {p.parser.variaveis_arrays2d[p[1].strip()][0]}\n"
             aux += "padd\n"
@@ -360,10 +380,14 @@ def p_operacao_inc_array2d_incrementar(p):
             aux += f"add\n"
             aux += f"storen\n"
             p[0] = aux
+        elif p[1].strip() in p.parser.variaveis_arrays:
+            p.parser.success = False
+            p.parser.erro = f"Variável '{p[3].strip()}' não definida.\n"
+            p[0] = ""
         else:
             p.parser.success = False
-            p.parser.erro = f"Variável '{p[1].strip()}' ou '{p[3].strip()}' não definida\n"
-            p[0] = "" 
+            p.parser.erro = f"Variável '{p[1].strip()}' não definida.\n"
+            p[0] = ""
     else:
         p[0] = ""     
 
@@ -373,7 +397,7 @@ def p_operacao_inc_array2d_decrementar(p):
         if p[1].strip() in p.parser.variaveis_arrays2d:
             if p[6] > p.parser.variaveis_arrays2d[p[1].strip()][2]-1 or p[3]>(p.parser.variaveis_arrays2d[p[1].strip()][1]-p.parser.variaveis_arrays2d[p[1].strip()][0])/p.parser.variaveis_arrays2d[p[1].strip()][2]:
                 p.parser.success = False
-                p.parser.erro = f"Array Index Out Of Bounds\n"
+                p.parser.erro = f"Array Index Out Of Bounds.\n"
             aux  = "pushgp\n"
             aux += f"pushi {p.parser.variaveis_arrays2d[p[1].strip()][0]}\n"
             aux += "padd\n"
@@ -383,10 +407,14 @@ def p_operacao_inc_array2d_decrementar(p):
             aux += f"sub\n"
             aux += f"storen\n"
             p[0] = aux
+        elif p[1].strip() in p.parser.variaveis_arrays:
+            p.parser.success = False
+            p.parser.erro = f"Variável '{p[3].strip()}' não definida.\n"
+            p[0] = ""
         else:
             p.parser.success = False
-            p.parser.erro = f"Variável '{p[1].strip()}' ou '{p[3].strip()}' não definida\n"
-            p[0] = "" 
+            p.parser.erro = f"Variável '{p[1].strip()}' não definida.\n"
+            p[0] = ""
     else:
         p[0] = ""      
 
@@ -396,7 +424,7 @@ def p_operacao_inc_array2d_plus_equal(p):
         if p[1].strip() in p.parser.variaveis_arrays2d:
             if p[6] > p.parser.variaveis_arrays2d[p[1].strip()][2]-1 or p[3]>(p.parser.variaveis_arrays2d[p[1].strip()][1]-p.parser.variaveis_arrays2d[p[1].strip()][0])/p.parser.variaveis_arrays2d[p[1].strip()][2]:
                 p.parser.success = False
-                p.parser.erro = f"Array Index Out Of Bounds\n"
+                p.parser.erro = f"Array Index Out Of Bounds.\n"
             aux  = "pushgp\n"
             aux += f"pushi {p.parser.variaveis_arrays2d[p[1].strip()][0]}\n"
             aux += "padd\n"
@@ -406,10 +434,14 @@ def p_operacao_inc_array2d_plus_equal(p):
             aux += f"add\n"
             aux += f"storen\n"
             p[0] = aux
+        elif p[1].strip() in p.parser.variaveis_arrays:
+            p.parser.success = False
+            p.parser.erro = f"Variável '{p[3].strip()}' não definida.\n"
+            p[0] = ""
         else:
             p.parser.success = False
-            p.parser.erro = f"Variável '{p[1].strip()}' ou '{p[3].strip()}' não definida\n"
-            p[0] = "" 
+            p.parser.erro = f"Variável '{p[1].strip()}' não definida.\n"
+            p[0] = ""
     else:
         p[0] = ""      
 
@@ -419,7 +451,7 @@ def p_operacao_inc_array2d_minus_equal(p):
         if p[1].strip() in p.parser.variaveis_arrays2d:
             if p[6] > p.parser.variaveis_arrays2d[p[1].strip()][2]-1 or p[3]>(p.parser.variaveis_arrays2d[p[1].strip()][1]-p.parser.variaveis_arrays2d[p[1].strip()][0])/p.parser.variaveis_arrays2d[p[1].strip()][2]:
                 p.parser.success = False
-                p.parser.erro = f"Array Index Out Of Bounds\n"
+                p.parser.erro = f"Array Index Out Of Bounds.\n"
             aux  = "pushgp\n"
             aux += f"pushi {p.parser.variaveis_arrays2d[p[1].strip()][0]}\n"
             aux += "padd\n"
@@ -429,10 +461,14 @@ def p_operacao_inc_array2d_minus_equal(p):
             aux += f"sub\n"
             aux += f"storen\n"
             p[0] = aux
+        elif p[1].strip() in p.parser.variaveis_arrays:
+            p.parser.success = False
+            p.parser.erro = f"Variável '{p[3].strip()}' não definida.\n"
+            p[0] = ""
         else:
             p.parser.success = False
-            p.parser.erro = f"Variável '{p[1].strip()}' ou '{p[3].strip()}' não definida\n"
-            p[0] = "" 
+            p.parser.erro = f"Variável '{p[1].strip()}' não definida.\n"
+            p[0] = ""
     else:
         p[0] = ""      
 
@@ -446,7 +482,7 @@ def p_operacao_variavel(p):
             p[0] = aux
         else:
             p.parser.success = False
-            p.parser.erro = f"Variável '{p[1].strip()}' não definida\n" 
+            p.parser.erro = f"Variável '{p[1].strip()}' não definida.\n" 
             p[0] = ""  
     else:
         p[0] = ""   
@@ -457,7 +493,7 @@ def p_operacao_array2d_valor(p):
         if p[1].strip() in p.parser.variaveis_arrays2d:
             if p[6] > p.parser.variaveis_arrays2d[p[1].strip()][2]-1 or p[3]>(p.parser.variaveis_arrays2d[p[1].strip()][1]-p.parser.variaveis_arrays2d[p[1].strip()][0])/p.parser.variaveis_arrays2d[p[1].strip()][2]:
                 p.parser.success = False
-                p.parser.erro = f"Array Index Out Of Bounds\n"
+                p.parser.erro = f"Array Index Out Of Bounds.\n"
             aux  = "pushgp\n"
             aux += f"pushi {p.parser.variaveis_arrays2d[p[1].strip()][0]}\n"
             aux += "padd\n"
@@ -465,10 +501,14 @@ def p_operacao_array2d_valor(p):
             aux += f"{p[9]}\n"
             aux += "storen\n"
             p[0] = aux
+        elif p[1].strip() in p.parser.variaveis_arrays:
+            p.parser.success = False
+            p.parser.erro = f"Variável '{p[3].strip()}' não definida.\n"
+            p[0] = ""
         else:
             p.parser.success = False
-            p.parser.erro = f"Variável '{p[1].strip()}' ou '{p[3].strip()}' não definida\n"
-            p[0] = "" 
+            p.parser.erro = f"Variável '{p[1].strip()}' não definida.\n"
+            p[0] = ""
     else:
         p[0] = ""   
 
@@ -478,7 +518,7 @@ def p_operacao_array_valor(p):
         if p[1].strip() in p.parser.variaveis_arrays:
             if p[3] > p.parser.variaveis_arrays[p[1].strip()][1]-p.parser.variaveis_arrays[p[1].strip()][0]:
                 p.parser.success = False
-                p.parser.erro = f"Array Index Out Of Bounds\n"
+                p.parser.erro = f"Array Index Out Of Bounds.\n"
             aux  = "pushgp\n"
             aux += f"pushi {p.parser.variaveis_arrays[p[1].strip()][0]}\n"
             aux += "padd\n"
@@ -488,7 +528,7 @@ def p_operacao_array_valor(p):
             p[0] = aux
         else:
             p.parser.success = False
-            p.parser.erro = f"Variável '{p[1].strip()}' não definida\n"
+            p.parser.erro = f"Variável '{p[1].strip()}' não definida.\n"
             p[0] = "" 
     else:
         p[0] = ""        
@@ -505,9 +545,13 @@ def p_operacao_array_valor_id(p):
             aux += f"{p[6]}\n"
             aux += "storen\n"
             p[0] = aux
+        elif p[1].strip() in p.parser.variaveis_arrays:
+            p.parser.success = False
+            p.parser.erro = f"Variável '{p[3].strip()}' não definida.\n"
+            p[0] = ""
         else:
             p.parser.success = False
-            p.parser.erro = f"Variável '{p[1].strip()}' ou '{p[3].strip()}' não definida\n"
+            p.parser.erro = f"Variável '{p[1].strip()}' não definida.\n"
             p[0] = "" 
     else:
         p[0] = ""     
@@ -542,7 +586,7 @@ def p_imprime_array(p):
         if p[2].strip() in p.parser.variaveis_arrays:
             if p[4] > p.parser.variaveis_arrays[p[2].strip()][1]-p.parser.variaveis_arrays[p[2].strip()][0]:
                 p.parser.success = False
-                p.parser.erro = f"Array Index Out Of Bounds\n"
+                p.parser.erro = f"Array Index Out Of Bounds.\n"
             aux  = "pushgp\n"
             aux += f"pushi {p.parser.variaveis_arrays[p[2].strip()][0]}\n"
             aux += "padd\n"
@@ -583,7 +627,7 @@ def p_imprime_array2d(p):
         if p[2].strip() in p.parser.variaveis_arrays2d:
             if p[7] > p.parser.variaveis_arrays2d[p[2].strip()][2]-1 or p[4]>(p.parser.variaveis_arrays2d[p[2].strip()][1]-p.parser.variaveis_arrays2d[p[2].strip()][0])/p.parser.variaveis_arrays2d[p[2].strip()][2]:
                 p.parser.success = False
-                p.parser.erro = f"Array Index Out Of Bounds\n"
+                p.parser.erro = f"Array Index Out Of Bounds.\n"
             aux  = "pushgp\n"
             aux += f"pushi {p.parser.variaveis_arrays2d[p[2].strip()][0]}\n"
             aux += "padd\n"
@@ -671,7 +715,7 @@ def p_operacao_read_array(p):
         if p[2].strip() in p.parser.variaveis_arrays:
             if p[4] > p.parser.variaveis_arrays[p[2].strip()][1]-p.parser.variaveis_arrays[p[2].strip()][0]:
                 p.parser.success = False
-                p.parser.erro = f"Array Index Out Of Bounds\n"
+                p.parser.erro = f"Array Index Out Of Bounds.\n"
             aux = ""
             aux += "pushgp\n"
             aux += f"pushi {p.parser.variaveis_arrays[p[2].strip()][0]}\n"
@@ -714,7 +758,7 @@ def p_operacao_read_array2d(p):
         if p[2].strip() in p.parser.variaveis_arrays2d:
             if p[7] > p.parser.variaveis_arrays2d[p[2].strip()][2]-1 or p[4]>(p.parser.variaveis_arrays2d[p[2].strip()][1]-p.parser.variaveis_arrays2d[p[2].strip()][0])/p.parser.variaveis_arrays2d[p[2].strip()][2]:
                 p.parser.success = False
-                p.parser.erro = f"Array Index Out Of Bounds\n"
+                p.parser.erro = f"Array Index Out Of Bounds.\n"
             aux  = "pushgp\n"
             aux += f"pushi {p.parser.variaveis_arrays2d[p[2].strip()][0]}\n"
             aux += "padd\n"
@@ -782,7 +826,7 @@ def p_fator_int(p):
             p[0] = f"pushg {p.parser.variaveis_int[p[1].strip()]}\n"
         else:
             p.parser.success = False
-            p.parser.erro = f"Variável '{p[1].strip()}' não definida\n"
+            p.parser.erro = f"Variável '{p[1].strip()}' não definida.\n"
             p[0] = ""
     else:
         p[0] = ""
@@ -794,7 +838,7 @@ def p_fator_array(p):
         if p[1].strip() in p.parser.variaveis_arrays:
             if p[3] > p.parser.variaveis_arrays[p[1].strip()][1]-p.parser.variaveis_arrays[p[1].strip()][0]:
                 p.parser.success = False
-                p.parser.erro = f"Array Index Out Of Bounds\n"
+                p.parser.erro = f"Array Index Out Of Bounds.\n"
             aux  = "pushgp\n"
             aux += f"pushi {p.parser.variaveis_arrays[p[1].strip()][0]}\n"
             aux += "padd\n"
@@ -803,7 +847,7 @@ def p_fator_array(p):
             p[0] = aux
         else:
             p.parser.success = False
-            p.parser.erro = f"Variável '{p[1].strip()}' não definida\n"
+            p.parser.erro = f"Variável '{p[1].strip()}' não definida.\n"
             p[0] = ""
     else:
         p[0] = ""       
@@ -818,9 +862,13 @@ def p_fator_array_id(p):
             aux += f"pushg {p.parser.variaveis_int[p[3].strip()]}\n"
             aux += "loadn\n"
             p[0] = aux
+        elif p[1].strip() in p.parser.variaveis_arrays:
+            p.parser.success = False
+            p.parser.erro = f"Variável '{p[3].strip()}' não definida.\n"
+            p[0] = ""
         else:
             p.parser.success = False
-            p.parser.erro = f"Variável '{p[1].strip()}' ou '{p[3].strip()}' não definida\n"
+            p.parser.erro = f"Variável '{p[1].strip()}' não definida.\n"
             p[0] = ""
     else:
         p[0] = ""      
@@ -831,7 +879,7 @@ def p_fator_array2d(p):
         if p[1].strip() in p.parser.variaveis_arrays2d:
             if p[6] > p.parser.variaveis_arrays2d[p[1].strip()][2]-1 or p[3]>(p.parser.variaveis_arrays2d[p[1].strip()][1]-p.parser.variaveis_arrays2d[p[1].strip()][0])/p.parser.variaveis_arrays2d[p[1].strip()][2]:
                 p.parser.success = False
-                p.parser.erro = f"Array Index Out Of Bounds\n"
+                p.parser.erro = f"Array Index Out Of Bounds.\n"
             aux  = "pushgp\n"
             aux += f"pushi {p.parser.variaveis_arrays2d[p[1].strip()][0]}\n"
             aux += "padd\n"
@@ -840,7 +888,7 @@ def p_fator_array2d(p):
             p[0] = aux
         else:
             p.parser.success = False
-            p.parser.erro = f"Variável '{p[1].strip()}' não definida\n"
+            p.parser.erro = f"Variável '{p[1].strip()}' não definida.\n"
             p[0] = ""
     else:
         p[0] = ""
