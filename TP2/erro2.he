@@ -1,0 +1,6 @@
+int c;
+int d=4;
+int e[3];
+int c[4];
+
+d++;
